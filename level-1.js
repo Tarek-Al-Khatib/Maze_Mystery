@@ -21,6 +21,8 @@ const config = {
 const game = new Phaser.Game(config); //initialize phaser game
 let player;
 let cursors; 
+let mapCanvas; // Hidden canvas map pixel collsion detection
+let mapContext; // To extract pixel data
 
 
 
@@ -38,6 +40,8 @@ function preload(){
         frameWidth: 24,
         frameHeight: 24,
     });
+
+
 }
 function create(){
     //Setting up the Background White
@@ -70,6 +74,16 @@ function create(){
     // To capture keyboared Input
     cursors = this.input.keyboard.createCursorKeys();
 
+    //Create a hidden canvas to access pixel data of the map maze
+    mapCanvas= document.createElement("canvas");
+    mapCanvas.width=500;
+    mapCanvas.height=500;
+    mapContext= mapCanvas.getContext("2d");
+
+    //Drawing the maze map into the hidden canvas to detect the walls
+    const texture = this.textures.get("map").getSourceImage();
+    mapContext.drawImage(texture, 0, 0, 500, 500); 
+
 }
 function update(){
     // Adding movements to the player
@@ -85,8 +99,8 @@ function update(){
         moveX = speed; // Move right
         player.anims.play("right", true); // Play right animation
     } else {
-        player.anims.stop(); // Stop animation if not moving
-        player.setTexture("tard_right"); // Set to idle texture or a default one
+        player.anims.stop(); // Stop animation 
+        player.setTexture("tard_right"); 
     }
 
     // To ensure the dino cant pass thru wall
@@ -96,7 +110,29 @@ function update(){
         moveY = speed; //move down
     }
 
-    // Update the player position
-    player.setVelocity(moveX, moveY);
+    // Attempt to move the player
+    movePlayer(moveX, moveY);
  
 }
+
+
+function movePlayer(dx, dy) {  
+    const nextX = player.x + dx * 0.05; // calculate players next potential position based on their current
+    const nextY = player.y + dy * 0.05;
+
+    // Check if wall
+    if (isWall(nextX, nextY)) {
+        player.setVelocity(0); // Stop 
+    } else {
+        player.setVelocity(dx, dy); // Move the player
+    }
+}
+
+function isWall(x, y) {
+    // Get the pixel data at the players next position
+    const pixel = mapContext.getImageData(Math.floor(x), Math.floor(y), 1, 1).data;
+
+    // Check if the pixel has a non-zero alpha (indicating a wall)
+    return pixel[3] > 0;
+}
+
