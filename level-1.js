@@ -26,6 +26,8 @@ let cursors;
 let mapCanvas; // Hidden canvas map pixel collsion detection
 let mapContext; // To extract pixel data
 let starGroup;
+let score = 0; // Setting initially to 0
+let scoreText; 
 
 
 
@@ -94,6 +96,11 @@ function create(){
     // Add collision between the player and stars 
     this.physics.add.overlap(player.player, starGroup, collectStars, null, this);  
     
+
+    // Create the score text object
+    scoreText = this.add.text(435, 16, 'Score: 0', { fontSize: '30px', fill: '#000'});
+
+
 }
 function update(){
     if (player){
@@ -104,4 +111,7 @@ function update(){
 // Function to collect the star
 function collectStars(player, star) {
     star.disableBody(true, true); // Remove the star from the screen
+    //Updating the Score
+    score += 10;
+    scoreText.setText("Score: " + score);
 }

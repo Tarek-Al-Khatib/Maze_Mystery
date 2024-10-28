@@ -2,7 +2,6 @@ export class Character{
     constructor(scene, x, y) {
         this.scene = scene; 
        
-
         //Adding our Player to the map
         this.player = scene.physics.add.sprite(180,40,"tard_left");
 
@@ -76,10 +75,5 @@ export class Character{
         // Check if the pixel has a non-zero alpha (indicating a wall)
         return pixel[3] > 0;
     }
-    
-    
-    
-
-
-      
+ 
 }
