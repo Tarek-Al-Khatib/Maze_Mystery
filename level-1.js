@@ -25,6 +25,7 @@ let player;
 let cursors; 
 let mapCanvas; // Hidden canvas map pixel collsion detection
 let mapContext; // To extract pixel data
+let starGroup;
 
 
 
@@ -42,6 +43,8 @@ function preload(){
         frameWidth: 24,
         frameHeight: 24,
     });
+
+    this.load.image("star","assets_hanan/star.png");
 
 
 }
@@ -66,12 +69,39 @@ function create(){
     mapContext.drawImage(texture, 0, 0, 500, 500); 
 
     // Create an instance of Character and store it as a property
-    player = new Character(this, 180, 40, mapCanvas); // Store reference in the outer scope
+    player = new Character(this, 180, 40); // Store reference in the outer scope
 
     player.mapContext = mapContext; // Pass the mapContext to the player in the Character class
+
+    // Place stars manually within the maze
+    const starPositions = [
+        { x: 120, y: 120 },
+        { x: 250, y: 180 },
+        { x: 320, y: 340 },
+        { x: 90, y: 240 },
+        { x: 300, y: 120 },
+    ];
+
+    // Creates a physics group for stars
+    starGroup = this.physics.add.group(); 
+    
+    // Create stars at the defined positions
+    starPositions.forEach((position) => { 
+        const star = starGroup.create(position.x, position.y, 'star');
+        star.setScale(0.7); // Adjusting star size 
+    });
+
+    // Add collision between the player and stars 
+    this.physics.add.overlap(player.player, starGroup, collectStars, null, this);  
+    
 }
 function update(){
     if (player){
         player.update(); 
     }
+}
+
+// Function to collect the star
+function collectStars(player, star) {
+    star.disableBody(true, true); // Remove the star from the screen
 }
