@@ -1,3 +1,5 @@
+import { Character } from './character.js'; 
+
 const config = {
     type: Phaser.WEBGL,
     width: 600, // canvas size
@@ -49,28 +51,7 @@ function create(){
 
     // Adding the Maze Map (with its size)
     const mapImage = this.add.image(250, 250, "map").setDisplaySize(500, 500); 
-
-    //Adding our Player to the map
-    player = this.physics.add.sprite(180,40,"tard_left")
-
-    //Adding animation for our Player
-    this.anims.create({
-        key: "left",
-        frames: this.anims.generateFrameNumbers("tard_left", { start: 0, end: 22 }),
-        frameRate: 10,
-        repeat: -1,
-    })
-
-    this.anims.create({
-        key: "right",
-        frames: this.anims.generateFrameNumbers("tard_right", { start: 0, end: 22 }),
-        frameRate: 10,
-        repeat: -1,
-    });
-
-    // Prevent player from leaving the canvas bounds
-    player.setCollideWorldBounds(true);
-
+    
     // To capture keyboared Input
     cursors = this.input.keyboard.createCursorKeys();
 
@@ -84,55 +65,13 @@ function create(){
     const texture = this.textures.get("map").getSourceImage();
     mapContext.drawImage(texture, 0, 0, 500, 500); 
 
+    // Create an instance of Character and store it as a property
+    player = new Character(this, 180, 40, mapCanvas); // Store reference in the outer scope
+
+    player.mapContext = mapContext; // Pass the mapContext to the player in the Character class
 }
 function update(){
-    // Adding movements to the player
-    const speed = 200; 
-    let moveX = 0; 
-    let moveY = 0; 
-
-    // Check input for movement
-    if (cursors.left.isDown) {
-        moveX = -speed; // Move left
-        player.anims.play("left", true); // Play left animation
-    } else if (cursors.right.isDown) {
-        moveX = speed; // Move right
-        player.anims.play("right", true); // Play right animation
-    } else {
-        player.anims.stop(); // Stop animation 
-        player.setTexture("tard_right"); 
-    }
-
-    // To ensure the dino cant pass thru wall
-    if (cursors.up.isDown) {
-        moveY = -speed; // move up
-    } else if (cursors.down.isDown) {
-        moveY = speed; //move down
-    }
-
-    // Attempt to move the player
-    movePlayer(moveX, moveY);
- 
-}
-
-
-function movePlayer(dx, dy) {  
-    const nextX = player.x + dx * 0.05; // calculate players next potential position based on their current
-    const nextY = player.y + dy * 0.05;
-
-    // Check if wall
-    if (isWall(nextX, nextY)) {
-        player.setVelocity(0); // Stop 
-    } else {
-        player.setVelocity(dx, dy); // Move the player
+    if (player){
+        player.update(); 
     }
 }
-
-function isWall(x, y) {
-    // Get the pixel data at the players next position
-    const pixel = mapContext.getImageData(Math.floor(x), Math.floor(y), 1, 1).data;
-
-    // Check if the pixel has a non-zero alpha (indicating a wall)
-    return pixel[3] > 0;
-}
-
