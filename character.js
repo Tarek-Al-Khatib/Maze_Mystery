@@ -1,4 +1,4 @@
-export class Character {
+class Character {
   constructor(scene, x, y) {
     this.scene = scene;
 
