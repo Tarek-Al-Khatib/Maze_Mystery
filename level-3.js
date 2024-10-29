@@ -17,8 +17,16 @@ class level3 extends Phaser.Scene {
     create() {
         //map section
         this.add.image(450, 450, "background").setDisplaySize(900, 900);// to display the background image
-        var mapImage = this.add.image(450, 450, "map").setDisplaySize(900, 900);// set the map image
-    
+        this.add.image(450, 450, "map").setDisplaySize(900, 900);// set the map image
+        
+        mapCanvas = document.createElement("canvas");
+        mapCanvas.width = 900;
+        mapCanvas.height = 900;
+        mapContext = mapCanvas.getContext("2d");
+        
+        mapTexture = this.textures.get("map").getSourceImage();
+        mapContext.drawImage(mapTexture, 0, 0, 900, 900);
+
 
         //player section
         player = this.physics.add.sprite(150, 110, "tard_left"); // add a player as a physical object on map
@@ -62,7 +70,12 @@ class level3 extends Phaser.Scene {
         if (moveX === 0 && moveY === 0) {
             player.setVelocity(0, 0);
             player.anims.play("turn", true);
+        }else {
+            player.setVelocity(moveX, moveY);
         }
 
     }
+
+    
+  
 }
