@@ -29,6 +29,11 @@ class Level2 extends Phaser.Scene {
       frameWidth: 24,
       frameHeight: 24,
     });
+    this.load.spritesheet("draven-top", "assets/draven-top.png", { frameWidth: 24, frameHeight: 24, });
+    this.load.spritesheet("draven-down", "assets/draven-down.png", { frameWidth: 24, frameHeight: 24, });
+
+    this.load.spritesheet("draven-left", "assets/draven-left.png", { frameWidth: 24, frameHeight: 24, });
+    this.load.spritesheet("draven-right", "assets/draven-right.png", { frameWidth: 24, frameHeight: 24, });
 
     this.load.image("star", "assets/star.png");
     this.load.image("bomb", "assets/bomb.png");

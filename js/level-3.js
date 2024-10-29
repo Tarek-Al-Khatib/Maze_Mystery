@@ -64,7 +64,7 @@ class level3 extends Phaser.Scene {
         //finish level
         this.next_level = this.physics.add.sprite(503, 529, "next_level").setDisplaySize(2, 2).setScale(0.03); 
         this.next_level.setCollideWorldBounds(true); 
-        this.physics.add.overlap(player, this.next_level, this.level_finish, null, this);
+        this.physics.add.overlap(player.player, this.next_level, this.level_finish, null, this);
   
 
         this.coins = this.physics.add.group(); 
@@ -73,7 +73,7 @@ class level3 extends Phaser.Scene {
 
 
         this.bombs = this.physics.add.group();
-        this.spawn_bombs(2);
+        this.spawn_bombs(6);
     
         this.physics.add.collider(player.player, this.bombs, 
             (playerSprite, bomb) => hitBomb(this, playerSprite),
@@ -104,11 +104,11 @@ class level3 extends Phaser.Scene {
   
     level_finish(player, next_level) {
         next_level.disableBody(true, true); 
-        scene.physics.pause();
-        scene.add.rectangle(300, 300, 600, 600, 0x000000, 0.5);
-        scene.add
+        this.physics.pause();
+        this.add.rectangle(300, 300, 600, 600, 0x000000, 0.5);
+        this.add
         .text(300, 300, "winner winner chicken dinner ", {
-            fontSize: "64px",
+            fontSize: "32px",
             fill: "#0f0",
             fontWeight: "bold",
             fontFamily: "Arial",
