@@ -39,20 +39,13 @@ class level3 extends Phaser.Scene {
 
 
         //player section
-        // player = this.physics.add.sprite(100, 70, "tard_left"); // add a player as a physical object on map
         player = new Character(this, 100, 70, this.character, 0, 0);
         player.mapContext = mapContext;
 
-        // player.setBounce(0.2);
-        // player.setCollideWorldBounds(true);
-        // player.setScale(1.25);
 
         //player movement animation 
-        this.anims.create({ key: "left", frames: this.anims.generateFrameNumbers("tard_left", { start: 0, end: 22, }), frameRate: 20, repeat: -1, });
-        this.anims.create({ key: "right",frames: this.anims.generateFrameNumbers("tard_right", {start: 0,end: 22,}),frameRate: 22,repeat: -1,});
         this.anims.create({ key: 'up', frames: this.anims.generateFrameNumbers('tard_top', { start: 0, end: 22 }), frameRate: 22, repeat: -1 });
         this.anims.create({ key: 'down', frames: this.anims.generateFrameNumbers('tard_down', { start: 0, end: 22 }), frameRate: 22, repeat: -1 });
-        this.anims.create({ key: 'turn', frames: [{ key: 'tard_left', frame: 0 }], frameRate: 20 });
         
         //finish level
         this.next_level = this.physics.add.sprite(503, 529, "next_level").setDisplaySize(2, 2).setScale(0.03); 
@@ -68,8 +61,15 @@ class level3 extends Phaser.Scene {
         this.bombs = this.physics.add.group();
         this.spawn_bombs(2);
     
-        this.physics.add.collider(player.player, this.bombs, this.hit_bomb, null, this);
+        this.physics.add.collider(player.player, this.bombs, 
+            (playerSprite, bomb) => hitBomb(this, playerSprite),
+            null, this);
 
+        scoreText = this.add.text(450, 0, "Score: 0", {
+            fontSize: "25px",
+            fill: "#fff",
+        });
+      
         //to detect user input
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -83,7 +83,6 @@ class level3 extends Phaser.Scene {
     }
     
     is_wall(x, y) {
-
         // to check if the pixel is in a specific position  if not player can move
         const pixel = mapContext.getImageData(Math.floor(x), Math.floor(y), 1, 1).data;
         return pixel[3] > 0;
@@ -91,12 +90,24 @@ class level3 extends Phaser.Scene {
   
     level_finish(player, next_level) {
         next_level.disableBody(true, true); 
-        //this.scene.start('level1');//next level
+        scene.physics.pause();
+        scene.add.rectangle(300, 300, 600, 600, 0x000000, 0.5);
+        scene.add
+        .text(300, 300, "winner winner chicken dinner ", {
+            fontSize: "64px",
+            fill: "#0f0",
+            fontWeight: "bold",
+            fontFamily: "Arial",
+        })
+        .setOrigin(0.5);
+    
     }
 
 
     collect_coin(player, coin) {
         coin.destroy();
+        score += 10;
+        scoreText.setText("Score: " + score);
     }
     
     //to set coins randomly on maps and make sure their place to position can be reached by the player
@@ -119,13 +130,6 @@ class level3 extends Phaser.Scene {
             }
         }
     }  
-
-    //if player hit bomb will puse and lose
-    hit_bomb(player, bomb) {
-        this.physics.pause();
-        player.player.setTint(0xff0000);
-        player.player.anims.play("turn");
-    }
     
     //to set more than one bomb as we want
     spawn_bombs(count) {
