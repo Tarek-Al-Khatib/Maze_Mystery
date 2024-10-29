@@ -1,7 +1,6 @@
 :root {
   font-family: "QB-one";
-  --dkColor:#000;
-
+  --dkColor: #000;
 }
 
 * {
@@ -12,58 +11,74 @@
 
 @font-face {
   font-family: "Jaro1";
-  src: url('./../../assets/fonts/Jaro/static/Jaro_9pt-Regular.ttf');
+  src: url("./../../assets/fonts/Jaro/static/Jaro_9pt-Regular.ttf");
 }
 
 @font-face {
   font-family: "Jaro2";
-  src: url('./../../assets/fonts/Jaro/static/Jaro_24pt-Regular.ttf');
+  src: url("./../../assets/fonts/Jaro/static/Jaro_24pt-Regular.ttf");
 }
 
 @font-face {
   font-family: "Jaro3";
-  src: url('./../../assets/fonts/Jaro/static/Jaro_36pt-Regular.ttf');
+  src: url("./../../assets/fonts/Jaro/static/Jaro_36pt-Regular.ttf");
 }
 
 @font-face {
   font-family: "Jaro4";
-  src: url('./../../assets/fonts/Jaro/static/Jaro_60pt-Regular.ttf');
+  src: url("./../../assets/fonts/Jaro/static/Jaro_60pt-Regular.ttf");
 }
 
 @font-face {
   font-family: "QB-one";
-  src: url('./../../assets/fonts/qb-one/BoxTube Labs - QB One Bold Condensed.ttf');
+  src: url("./../../assets/fonts/qb-one/BoxTube Labs - QB One Bold Condensed.ttf");
   font-weight: bold;
 }
 
-body{
+body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
-header,footer{
+header,
+footer {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px 20px;
 }
-main{
+main {
   flex: 1;
   display: flex;
 }
 
-html, body {
+html,
+body {
   height: 100%;
-  margin: 0; 
-  display: flex; 
+  margin: 0;
+  display: flex;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;
   background-color: blueviolet;
 }
 
 #gameCanvas {
-  border: 1px solid blue;  
-  display: block; 
-  z-index: 1; 
-  margin-left: 150px;
+  display: block;
+  z-index: 1;
+}
+
+input {
+  background: 0;
+  display: block;
+  border: 1px solid black;
+  outline: none;
+  width: 80vw;
+  max-width: 400px;
+  margin-left: 10px;
+  font-size: 1.5em;
+  transition: padding 0.3s 0.2s ease;
+}
+
+input ::placeholder {
+  color: white;
 }
