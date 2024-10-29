@@ -2,8 +2,8 @@ import { Character } from "./character.js";
 import { spawnBombs, hitBomb } from "./bombs.js";
 const config = {
   type: Phaser.WEBGL,
-  width: 600, // canvas size
-  height: 600, //canvas size
+  width: 800, // canvas size
+  height: 800, //canvas size
   canvas: gameCanvas, //canvasID
   physics: {
     default: "arcade",
@@ -46,15 +46,15 @@ function preload() {
 
 function create() {
   this.cameras.main.setBackgroundColor("#fff");
-  const mapImage = this.add.image(300, 300, "map2").setDisplaySize(600, 600);
+  const mapImage = this.add.image(400, 400, "map2").setDisplaySize(800, 800);
   cursors = this.input.keyboard.createCursorKeys();
   mapCanvas = document.createElement("canvas");
-  mapCanvas.width = 500;
-  mapCanvas.height = 500;
+  mapCanvas.width = 700;
+  mapCanvas.height = 700;
   mapContext = mapCanvas.getContext("2d");
 
-  const texture = this.textures.get("map").getSourceImage();
-  mapContext.drawImage(texture, 0, 0, 600, 600);
+  const texture = this.textures.get("map2").getSourceImage();
+  mapContext.drawImage(texture, 0, 0, 800, 800);
 
   player = new Character(this, 90, 260);
   player.mapContext = mapContext;
