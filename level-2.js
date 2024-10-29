@@ -108,5 +108,8 @@ class Level2 extends Phaser.Scene {
         fontFamily: "Arial",
       })
       .setOrigin(0.5);
+    setTimeout(() => {
+      this.scene.start("level3");
+    }, 3000);
   }
 }
