@@ -57,8 +57,12 @@ class Level1 extends Phaser.Scene {
     const yBoundary = 82;
     const xBoundary =0;
 
+    var xBoundaryLimit = 80;
+    var yBoundaryLimit = 0;
     // Create an instance of Character and store it as a property
+
     player = new Character(this, 210, 85, this.character, yBoundary, xBoundary); // Store reference in the outer scope
+
     player.mapContext = mapContext; // Pass the mapContext to the player in the Character class
 
     // Place stars manually within the maze
