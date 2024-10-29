@@ -2,8 +2,14 @@ class level3 extends Phaser.Scene {
     constructor() {
       super("level3");  
     }
+    init(data) {
+        this.username = data.username;
+        this.character = data.character;
+        console.log(data);
+    }
+    
     preload() {
-        this.load.image("map", "assets/level3/map.png");// the player map
+        this.load.image("level3map", "assets/level3/map.png");// the player map
         this.load.image("background", "assets/level3/background.jpg");// the map background 
         
         //Player Assets
@@ -21,22 +27,25 @@ class level3 extends Phaser.Scene {
     create() {
         //map section
         this.add.image(300, 300, "background").setDisplaySize(600, 600);// to display the background image
-        this.add.image(300, 300, "map").setDisplaySize(600, 600);// set the map image
+        this.add.image(300, 300, "level3map").setDisplaySize(600, 600);// set the map image
         
         mapCanvas = document.createElement("canvas");
         mapCanvas.width = 600;
         mapCanvas.height = 600;
         mapContext = mapCanvas.getContext("2d");
         
-        const mapTexture = this.textures.get("map").getSourceImage();
+        const mapTexture = this.textures.get("level3map").getSourceImage();
         mapContext.drawImage(mapTexture, 0, 0, 600, 600);
 
 
         //player section
-        player = this.physics.add.sprite(100, 70, "tard_left"); // add a player as a physical object on map
-        player.setBounce(0.2);
-        player.setCollideWorldBounds(true);
-        player.setScale(1.25);
+        // player = this.physics.add.sprite(100, 70, "tard_left"); // add a player as a physical object on map
+        player = new Character(this, 100, 70, this.character, 0, 0);
+        player.mapContext = mapContext;
+
+        // player.setBounce(0.2);
+        // player.setCollideWorldBounds(true);
+        // player.setScale(1.25);
 
         //player movement animation 
         this.anims.create({ key: "left", frames: this.anims.generateFrameNumbers("tard_left", { start: 0, end: 22, }), frameRate: 20, repeat: -1, });
@@ -52,14 +61,14 @@ class level3 extends Phaser.Scene {
   
 
         this.coins = this.physics.add.group(); 
-        this.physics.add.overlap(player, this.coins, this.collect_coin, null, this);
+        this.physics.add.overlap(player.player, this.coins, this.collect_coin, null, this);
         this.place_coins(30,'coin');
 
 
         this.bombs = this.physics.add.group();
         this.spawn_bombs(2);
     
-        this.physics.add.collider(player, this.bombs, this.hit_bomb, null, this);
+        this.physics.add.collider(player.player, this.bombs, this.hit_bomb, null, this);
 
         //to detect user input
         cursors = this.input.keyboard.createCursorKeys();
@@ -67,48 +76,10 @@ class level3 extends Phaser.Scene {
     }
 
     update() {
-
         //set action animation to player when user press up,down, left or wright
-        const speed = 200;
-        let moveX = 0;
-        let moveY = 0;
-
-        if (cursors.left.isDown) {
-            moveX = -speed;
-            player.anims.play("left", true);
-        } else if (cursors.right.isDown) {
-            moveX = speed;
-            player.anims.play("right", true);
-        }
-
-        if (cursors.up.isDown) {
-            moveY = -speed;
-            player.anims.play("up", true);
-        } else if (cursors.down.isDown) {
-            moveY = speed;
-            player.anims.play("down", true);
-        }
-
-        if (moveX === 0 && moveY === 0) {
-            player.setVelocity(0, 0);
-            player.anims.play("turn", true);
-        }else {
-            this.move_player(player, moveX, moveY);
-        }
-
-    }
-    move_player(player, dx, dy) {
-        //get the next postion wall or not 
-        const nextX = player.x + dx * 0.05;
-        const nextY = player.y + dy * 0.05;
-        
-        
-        //check if the next postion wall or not 
-        if (this.is_wall(nextX, nextY)) {
-            player.setVelocity(0, 0);
-        } else {
-            player.setVelocity(dx, dy);
-        }
+        if (player) {
+            player.update();
+        }      
     }
     
     is_wall(x, y) {
@@ -152,8 +123,8 @@ class level3 extends Phaser.Scene {
     //if player hit bomb will puse and lose
     hit_bomb(player, bomb) {
         this.physics.pause();
-        player.setTint(0xff0000);
-        player.anims.play("turn");
+        player.player.setTint(0xff0000);
+        player.player.anims.play("turn");
     }
     
     //to set more than one bomb as we want
