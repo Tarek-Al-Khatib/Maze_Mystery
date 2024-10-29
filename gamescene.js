@@ -47,9 +47,15 @@ class GameScene extends Phaser.Scene {
     });
 
     startButton.on("pointerdown", () => {
-      this.username = document.getElementById("username");
-      if (this.username.value) {
-        this.username.classList.display = "none";
+      var userinput = document.getElementById("username");
+      var label = document.getElementById("userlabel");
+      if (userinput.value) {
+        userinput.style.display = "none";
+        label.innerHTML =
+          "Let's go " +
+          userinput.value +
+          " Finish the game as " +
+          this.selectedCharacter;
         this.moveToLevel();
       } else {
         alert("Please enter a username!");
