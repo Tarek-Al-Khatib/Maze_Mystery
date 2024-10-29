@@ -20,20 +20,20 @@ class level3 extends Phaser.Scene {
 
     create() {
         //map section
-        this.add.image(450, 450, "background").setDisplaySize(900, 900);// to display the background image
-        this.add.image(450, 450, "map").setDisplaySize(900, 900);// set the map image
+        this.add.image(300, 300, "background").setDisplaySize(600, 600);// to display the background image
+        this.add.image(300, 300, "map").setDisplaySize(600, 600);// set the map image
         
         mapCanvas = document.createElement("canvas");
-        mapCanvas.width = 900;
-        mapCanvas.height = 900;
+        mapCanvas.width = 600;
+        mapCanvas.height = 600;
         mapContext = mapCanvas.getContext("2d");
         
-        mapTexture = this.textures.get("map").getSourceImage();
-        mapContext.drawImage(mapTexture, 0, 0, 900, 900);
+        const mapTexture = this.textures.get("map").getSourceImage();
+        mapContext.drawImage(mapTexture, 0, 0, 600, 600);
 
 
         //player section
-        player = this.physics.add.sprite(150, 110, "tard_left"); // add a player as a physical object on map
+        player = this.physics.add.sprite(100, 70, "tard_left"); // add a player as a physical object on map
         player.setBounce(0.2);
         player.setCollideWorldBounds(true);
         player.setScale(1.25);
@@ -46,21 +46,21 @@ class level3 extends Phaser.Scene {
         this.anims.create({ key: 'turn', frames: [{ key: 'tard_left', frame: 0 }], frameRate: 20 });
         
         //finish level
-        this.next_level = this.physics.add.sprite(755, 795, "next_level").setDisplaySize(2, 2).setScale(0.05); 
+        this.next_level = this.physics.add.sprite(503, 529, "next_level").setDisplaySize(2, 2).setScale(0.03); 
         this.next_level.setCollideWorldBounds(true); 
         this.physics.add.overlap(player, this.next_level, this.level_finish, null, this);
   
 
         this.coins = this.physics.add.group(); 
         this.physics.add.overlap(player, this.coins, this.collect_coin, null, this);
-        this.place_coins(20,'coin');
+        this.place_coins(30,'coin');
 
 
         this.bombs = this.physics.add.group();
-        this.spawn_bombs(15);
+        this.spawn_bombs(2);
     
         this.physics.add.collider(player, this.bombs, this.hit_bomb, null, this);
-  
+
         //to detect user input
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -130,10 +130,10 @@ class level3 extends Phaser.Scene {
     
     //to set coins randomly on maps and make sure their place to position can be reached by the player
     place_coins(count,type) {
-        const mapMinX = 100; 
-        const mapMaxX = 800; 
-        const mapMinY = 100; 
-        const mapMaxY = 800; 
+        const mapMinX = 540; //540
+        const mapMaxX = 55;//48 
+        const mapMinY = 520;//520 
+        const mapMaxY = 60;//60 
     
         let placed = 0;
     
