@@ -39,37 +39,43 @@ class Level1 extends Phaser.Scene {
     this.cameras.main.setBackgroundColor("#8A2BE2");
 
     // Adding the Maze Map (with its size)
-    const mapImage = this.add.image(250, 250, "map").setDisplaySize(500, 500);
+    const mapImage = this.add.image(300, 300, "map").setDisplaySize(600, 600);
 
     cursors = this.input.keyboard.createCursorKeys();
 
     //Create a hidden canvas to access pixel data of the map maze
     mapCanvas = document.createElement("canvas");
-    mapCanvas.width = 500;
-    mapCanvas.height = 500;
+    mapCanvas.width = 600;
+    mapCanvas.height = 600;
     mapContext = mapCanvas.getContext("2d");
 
     //Drawing the maze map into the hidden canvas to detect the walls
     const texture = this.textures.get("map").getSourceImage();
-    mapContext.drawImage(texture, 0, 0, 500, 500);
+    mapContext.drawImage(texture, 0, 0, 600, 600);
+
+    // Define Boundary limits
+    const yBoundary = 82;
+    const xBoundary =0;
 
     // Create an instance of Character and store it as a property
-    player = new Character(this, 180, 40, this.character); // Store reference in the outer scope
+    player = new Character(this, 210, 85, this.character, yBoundary, xBoundary); // Store reference in the outer scope
     player.mapContext = mapContext; // Pass the mapContext to the player in the Character class
 
     // Place stars manually within the maze
     const starPositions = [
-      { x: 120, y: 120 },
-      { x: 250, y: 180 },
-      { x: 320, y: 340 },
-      { x: 90, y: 240 },
-      { x: 300, y: 120 },
-      { x: 270, y: 415 },
+      { x: 150, y: 140 }, //
+      { x: 240, y: 190 }, //
+      { x: 305, y: 140 }, 
+      { x: 330, y: 300 }, 
+      { x: 410, y: 200 }, 
+      { x: 455, y: 390 },
+      { x: 240, y: 450 }, 
+      
     ];
     var winningStarGroup = this.physics.add.group();
 
-    var winningStar = winningStarGroup.create(360, 450, "winningStar");
-    winningStar.setScale(0.05);
+    var winningStar = winningStarGroup.create(100, 285, "winningStar");
+    winningStar.setScale(0.03);
     this.physics.add.collider(
       player.player,
       winningStarGroup,

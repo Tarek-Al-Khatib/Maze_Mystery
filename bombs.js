@@ -25,19 +25,6 @@ function spawnBombs(scene, count) {
 
 function hitBomb(scene, playerSprite) {
 
-<<<<<<< HEAD
-    //Transparent background for the text
-    const background = scene.add.rectangle(300, 300, 600, 700, 0x000000, 0.5);
-
-    // Display game over text
-    const gameOverText = scene.add.text(300, 300, 'Game Over', { 
-        fontSize: '64px', 
-        fill: '#ff0000',
-        fontWeight: 'bold', 
-        fontFamily: 'Arial' 
-    }).setOrigin(0.5);
-}
-=======
   // Stops all physics
   scene.physics.pause();
   // Tint the player for GameOver
@@ -56,4 +43,3 @@ function hitBomb(scene, playerSprite) {
     })
     .setOrigin(0.5);
 }
->>>>>>> a282d4a2209375446b4d73d3eb012e969051e481
