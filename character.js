@@ -1,56 +1,71 @@
 class Character {
+<<<<<<< HEAD
   constructor(scene, x, y, yBoundary, xBoundary) {
     this.scene = scene;
     this.yBoundary = yBoundary; 
     this.xBoundary = xBoundary; 
 
-    //Adding our Player to the map
-    this.player = scene.physics.add.sprite(x, y, "tard_left");
+=======
 
-    //Adding animation for our Player
+  constructor(scene, x, y, characterName) {
+    this.scene = scene;
+    this.characterName = characterName;
+    console.log(characterName);
+>>>>>>> a282d4a2209375446b4d73d3eb012e969051e481
+    //Adding our Player to the map
+    this.player = scene.physics.add.sprite(
+      x,
+      y,
+      this.characterName == "draven" ? "draven-left" : "tard_left"
+    );
+
     scene.anims.create({
       key: "left",
-      frames: scene.anims.generateFrameNumbers("tard_left", {
-        start: 0,
-        end: 22,
-      }),
+      frames: scene.anims.generateFrameNumbers(
+        this.characterName == "draven" ? "draven-left" : "tard_left",
+        {
+          start: 0,
+          end: 22,
+        }
+      ),
       frameRate: 10,
       repeat: -1,
     });
 
     scene.anims.create({
       key: "right",
-      frames: scene.anims.generateFrameNumbers("tard_right", {
-        start: 0,
-        end: 22,
-      }),
+      frames: scene.anims.generateFrameNumbers(
+        this.characterName == "draven" ? "draven-right" : "tard_right",
+        {
+          start: 0,
+          end: 22,
+        }
+      ),
       frameRate: 10,
       repeat: -1,
     });
 
-    // Prevent player from leaving the canvas bounds
     this.player.setCollideWorldBounds(true);
   }
 
   update() {
-    // Adding movements to the player
     const speed = 200;
     let moveX = 0;
     let moveY = 0;
 
-    // Check for input from the cursor keys
     const cursors = this.scene.input.keyboard.createCursorKeys();
 
-    // Check input for movement
     if (cursors.left.isDown) {
-      moveX = -speed; // Move left
-      this.player.anims.play("left", true); // Play left animation
+      moveX = -speed;
+      this.player.anims.play("left", true);
     } else if (cursors.right.isDown) {
       moveX = speed; // Move right
-      this.player.anims.play("right", true); // Play right animation
+      this.player.anims.play("right", true);
     } else {
-      this.player.anims.stop(); // Stop animation
-      this.player.setTexture("tard_right");
+      this.player.anims.stop();
+      this.player.setTexture(
+        this.characterName == "draven" ? "draven-right" : "tard_right"
+      );
     }
 
     // To ensure the dino cant pass thru wall
