@@ -17,6 +17,7 @@ class Level1 extends Phaser.Scene {
 
         this.load.image("star", "assets/star.png");
         this.load.image("bomb", "assets/bomb.png");
+        this.load.image("winningStar", "assets/winning-star.png");
     }
 
     create(){
@@ -24,34 +25,37 @@ class Level1 extends Phaser.Scene {
         this.cameras.main.setBackgroundColor('#8A2BE2')
 
         // Adding the Maze Map (with its size)
-        const mapImage = this.add.image(250, 250, "map").setDisplaySize(500, 500); 
+        const mapImage = this.add.image(300, 300, "map").setDisplaySize(600, 600); 
         
         
         cursors = this.input.keyboard.createCursorKeys();
 
         //Create a hidden canvas to access pixel data of the map maze
         mapCanvas= document.createElement("canvas");
-        mapCanvas.width=500;
-        mapCanvas.height=500;
+        mapCanvas.width=600;
+        mapCanvas.height=600;
         mapContext= mapCanvas.getContext("2d");
 
         //Drawing the maze map into the hidden canvas to detect the walls
         const texture = this.textures.get("map").getSourceImage();
-        mapContext.drawImage(texture, 0, 0, 500, 500); 
+        mapContext.drawImage(texture, 0, 0, 600, 600); 
 
+        // Define boundary limits for this level
+        const yBoundaryLimit = 80;
+        const xBoundaryLimit = 0;
 
         // Create an instance of Character and store it as a property
-        player1 = new Character(this, 180, 40); // Store reference in the outer scope
+        player1 = new Character(this, 210, 90, yBoundaryLimit, xBoundaryLimit);
         player1.mapContext = mapContext; // Pass the mapContext to the player in the Character class
 
         // Place stars manually within the maze
         const starPositions = [
-            { x: 120, y: 120 },
-            { x: 250, y: 180 },
-            { x: 320, y: 340 },
-            { x: 90, y: 240 },
-            { x: 300, y: 120 },
-            { x: 270, y: 415},
+            { x: 150, y: 250 },
+            { x: 410, y: 200 },
+            { x: 330, y: 300 },
+            { x: 455, y: 290 },
+            { x: 300, y: 145 },
+            { x: 270, y: 410},
         ];
 
         // Creates a physics group for stars
@@ -75,7 +79,13 @@ class Level1 extends Phaser.Scene {
         // Add collision between the player and bombs
         this.physics.add.collider(player1.player, this.bombs, (playerSprite, bomb) => hitBomb(this, playerSprite), null, this);
 
-        
+
+        var winningStarGroup = this.physics.add.group();
+
+        const winningStar = winningStarGroup.create(100, 290, "winningStar");
+
+        winningStar.setScale(0.03);
+        this.physics.add.collider( player1.player, winningStarGroup, () => this.collectWinningStar(this, winningStar), null, this);
 
     }
     update(){
@@ -90,5 +100,23 @@ class Level1 extends Phaser.Scene {
         score += 10;
         scoreText.setText("Score: " + score);
     }
+
+    collectWinningStar(scene, star) {
+        star.disableBody(true, true);
+        scene.physics.pause();
+        scene.add.rectangle(300, 300, 600, 600, 0x000000, 0.5);
+        scene.add
+          .text(300, 300, "You win", {
+            fontSize: "64px",
+            fill: "#0f0",
+            fontWeight: "bold",
+            fontFamily: "Arial",
+          })
+          .setOrigin(0.5);
+        setTimeout(() => {
+          this.scene.start("level3");
+        }, 3000);
+      }
+    
 }
 

@@ -26,10 +26,10 @@ function hitBomb(scene, playerSprite) {
     playerSprite.setTint(0xff0000);
 
     //Transparent background for the text
-    const background = scene.add.rectangle(300, 250, 600, 500, 0x000000, 0.5);
+    const background = scene.add.rectangle(300, 300, 600, 700, 0x000000, 0.5);
 
     // Display game over text
-    const gameOverText = scene.add.text(250, 250, 'Game Over', { 
+    const gameOverText = scene.add.text(300, 300, 'Game Over', { 
         fontSize: '64px', 
         fill: '#ff0000',
         fontWeight: 'bold', 
