@@ -2,25 +2,26 @@ import { Character } from './character.js';
 import { spawnBombs, hitBomb } from './bombs.js';
 
 const config = {
-    type: Phaser.WEBGL,
-    width: 600, // canvas size
-    height: 500, //canvas size
-    canvas: gameCanvas, //canvasID
-    physics: {
-      default: "arcade",
-      arcade: {
-        gravity: { y: 0 },
-        debug: true, // Enable debug to visualize (set it false to remove the box over the dino)
-      },
+  type: Phaser.WEBGL,
+  width: 600, // canvas size
+  height: 500, //canvas size
+  canvas: gameCanvas, //canvasID
+  physics: {
+    default: "arcade",
+    arcade: {
+      gravity: { y: 0 },
+      debug: true, // Enable debug to visualize (set it false to remove the box over the dino)
     },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update,
-    },
+  },
+  scene: {
+    preload: preload,
+    create: create,
+    update: update,
+  },
 };
 
 const game = new Phaser.Game(config); //initialize phaser game
+
 
 let player1;
 let cursors; 
@@ -28,30 +29,27 @@ let mapCanvas; // Hidden canvas map pixel collsion detection
 let mapContext; // To extract pixel data
 let starGroup;
 let score = 0; // Setting initially to 0
-let scoreText; 
+let scoreText;
 
+function preload() {
+  // Load the maze PNG and other assets
+  this.load.image("map", "assets/map.png");
 
+  // Load the Player
+  this.load.spritesheet("tard_left", "assets/tard_left_blue.png", {
+    frameWidth: 24,
+    frameHeight: 24,
+  });
 
-function preload(){
-    // Load the maze PNG and other assets
-    this.load.image("map", "assets/map.png");
+  this.load.spritesheet("tard_right", "assets/tard_right_blue.png", {
+    frameWidth: 24,
+    frameHeight: 24,
+  });
 
-    // Load the Player
-    this.load.spritesheet("tard_left", "assets/tard_left_blue.png", {
-        frameWidth: 24,
-        frameHeight: 24,
-    });
-    
-    this.load.spritesheet("tard_right", "assets/tard_right_blue.png", {
-        frameWidth: 24,
-        frameHeight: 24,
-    });
-
-    this.load.image("star","assets/star.png");
-    this.load.image('bomb', 'assets/bomb.png');
-
-
+  this.load.image("star", "assets/star.png");
+  this.load.image("bomb", "assets/bomb.png");
 }
+
 function create(){
     //Setting up the Background White
     this.cameras.main.setBackgroundColor('#8A2BE2')
@@ -123,3 +121,4 @@ function collectStars(player, star) {
     score += 10;
     scoreText.setText("Score: " + score);
 }
+
