@@ -14,6 +14,7 @@ class level3 extends Phaser.Scene {
         
         this.load.image("next_level", "assets/winning-star.png"); // image assesst to win the game
         this.load.image("coin", "assets/star.png"); // star it's a coin collected by the player
+        this.load.image('bomb', 'assets/bomb.png'); // bomb to kill the player
 
     }
 
@@ -54,6 +55,12 @@ class level3 extends Phaser.Scene {
         this.physics.add.overlap(player, this.coins, this.collect_coin, null, this);
         this.place_coins(20,'coin');
 
+
+        this.bombs = this.physics.add.group();
+        this.spawn_bombs(15);
+    
+        this.physics.add.collider(player, this.bombs, this.hit_bomb, null, this);
+  
         //to detect user input
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -116,7 +123,7 @@ class level3 extends Phaser.Scene {
         //this.scene.start('level1');//next level
     }
 
-    
+
     collect_coin(player, coin) {
         coin.destroy();
     }
@@ -134,13 +141,40 @@ class level3 extends Phaser.Scene {
             const x = Phaser.Math.Between(mapMinX, mapMaxX);
             const y = Phaser.Math.Between(mapMinY, mapMaxY);
     
-            if (!this.isWall(x, y)) { 
+            if (!this.is_wall(x, y)) { 
                 const coin = this.coins.create(x, y, type);
                 coin.setScale(0.5); 
                 placed++;
             }
         }
     }  
-  
-  
+
+    //if player hit bomb will puse and lose
+    hit_bomb(player, bomb) {
+        this.physics.pause();
+        player.setTint(0xff0000);
+        player.anims.play("turn");
+    }
+    
+    //to set more than one bomb as we want
+    spawn_bombs(count) {
+        this.bombs = this.physics.add.group({
+            key: "bomb",
+            repeat: count - 1,
+            setXY: { x: Phaser.Math.Between(100, 800), y: Phaser.Math.Between(100, 800) },
+            setScale: { x: 1.5, y: 1.5 } 
+        });
+    
+        this.bombs.children.iterate((bomb) => {
+            bomb.setBounce(1);  
+            bomb.setCollideWorldBounds(true);
+            bomb.setScale(2)
+            bomb.setBounce(1)
+            const speedX = Phaser.Math.Between(-200, 200);
+            const speedY = Phaser.Math.Between(-200, 200);
+            bomb.setVelocity(speedX, speedY);
+        });
+    
+        this.physics.add.collider(this.bombs, this.bombs);
+    }
 }
