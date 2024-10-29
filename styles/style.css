@@ -1,32 +1,13 @@
 :root {
   font-family: "QB-one";
   --dkColor: #000;
+  --lightColor: white;
 }
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-}
-
-@font-face {
-  font-family: "Jaro1";
-  src: url("./../../assets/fonts/Jaro/static/Jaro_9pt-Regular.ttf");
-}
-
-@font-face {
-  font-family: "Jaro2";
-  src: url("./../../assets/fonts/Jaro/static/Jaro_24pt-Regular.ttf");
-}
-
-@font-face {
-  font-family: "Jaro3";
-  src: url("./../../assets/fonts/Jaro/static/Jaro_36pt-Regular.ttf");
-}
-
-@font-face {
-  font-family: "Jaro4";
-  src: url("./../../assets/fonts/Jaro/static/Jaro_60pt-Regular.ttf");
 }
 
 @font-face {
@@ -39,46 +20,50 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color: blueviolet;
+  font-family: var(--dkColor);
 }
 header,
 footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 20px;
+  padding: 20px;
+  color: var(--lightColor);
+  font-size: 1rem;
 }
 main {
   flex: 1;
   display: flex;
-}
-
-html,
-body {
-  height: 100%;
-  margin: 0;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  background-color: blueviolet;
+  align-items: center;
 }
 
 #gameCanvas {
   display: block;
   z-index: 1;
+  background-color: white;
+  border: 2px solid black;
 }
 
 input {
-  background: 0;
-  display: block;
+  background: transparent;
+  color: var(--lightColor);
   border: 1px solid black;
+  padding: 5px;
   outline: none;
   width: 80vw;
   max-width: 400px;
   margin-left: 10px;
   font-size: 1.5em;
-  transition: padding 0.3s 0.2s ease;
+  transition: padding 0.3s ease;
 }
 
-input ::placeholder {
-  color: white;
+input:focus {
+  padding: 10px;
+  border-color: var(--lightColor);
+}
+
+input::placeholder {
+  color: var(--lightColor);
 }
