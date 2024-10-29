@@ -62,7 +62,7 @@ html, body {
 }
 
 #gameCanvas {
-  /* border: 1px solid blue;  */ 
+  border: 1px solid blue;  
   display: block; 
   z-index: 1; 
   margin-left: 150px;

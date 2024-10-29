@@ -1,5 +1,5 @@
 // Function to spawn bombs
-export function spawnBombs(scene, count) {
+function spawnBombs(scene, count) {
     const bombs = scene.physics.add.group({
         key: "bomb",
         repeat: count - 1,
@@ -19,7 +19,7 @@ export function spawnBombs(scene, count) {
     return bombs; // Return the bombs group
 }
 
-export function hitBomb(scene, playerSprite) {
+function hitBomb(scene, playerSprite) {
     // Stops all physics
     scene.physics.pause();
     // Tint the player for GameOver

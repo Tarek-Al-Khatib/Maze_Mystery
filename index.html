@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="styles/colors.css" />
     <link rel="stylesheet" href="styles/style.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
+    <script src="./character.js"></script>
+    <script src="./bombs.js"></script>
+    <script src="./level-2.js"></script>
+    <script src="./level-3.js"></script>
+    <script src="./level-1.js"></script>
   </head>
   <body>
     <header>
@@ -19,6 +24,34 @@
     <footer>
       <p>here is the footer</p>
     </footer>
-    <script type="module" src="level-2.js"></script>
+    <script>
+      let player;
+      let player1;
+      let cursors;
+      let mapCanvas; // Hidden canvas map pixel collsion detection
+      let mapContext; // To extract pixel data
+      let starGroup;
+      let score = 0; // Setting initially to 0
+      let scoreText;
+
+      const config = {
+        type: Phaser.WEBGL,
+        width: 600, // canvas size
+        height: 600, //canvas size
+        canvas: gameCanvas, //canvasID
+        physics: {
+          default: "arcade",
+          arcade: {
+            gravity: { y: 0 },
+            debug: true, // Enable debug to visualize (set it false to remove the box over the dino)
+          },
+        },
+        scene: [Level1],
+      };
+
+      const game = new Phaser.Game(config); //initialize phaser game
+    </script>
+    <!-- <script type="module" src="level-1.js"></script> -->
+    
   </body>
 </html>

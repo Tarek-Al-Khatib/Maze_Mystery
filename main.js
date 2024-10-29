@@ -1,4 +1,4 @@
-import { Level1 } from './level-1.js';
+import { Level1 } from './level-1-1.js';
 
 
 const config = {
