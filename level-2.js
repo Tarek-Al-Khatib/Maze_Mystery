@@ -45,7 +45,7 @@ class Level2 extends Phaser.Scene {
     const texture = this.textures.get("map2").getSourceImage();
     mapContext.drawImage(texture, 0, 0, 600, 600);
 
-    player = new Character(this, 0, 240, this.character);
+    player = new Character(this, 0, 240, this.character, 80, 0);
     player.mapContext = mapContext;
 
     const starPositions = [

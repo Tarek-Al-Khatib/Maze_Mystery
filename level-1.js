@@ -53,8 +53,10 @@ class Level1 extends Phaser.Scene {
     const texture = this.textures.get("map").getSourceImage();
     mapContext.drawImage(texture, 0, 0, 500, 500);
 
+    var xBoundaryLimit = 80;
+    var yBoundaryLimit = 0;
     // Create an instance of Character and store it as a property
-    player = new Character(this, 180, 40, this.character); // Store reference in the outer scope
+    player = new Character(this, 180, 40, this.character, 80, 0); // Store reference in the outer scope
     player.mapContext = mapContext; // Pass the mapContext to the player in the Character class
 
     // Place stars manually within the maze
