@@ -13,6 +13,7 @@ class level3 extends Phaser.Scene {
         this.load.spritesheet("tard_down", "assets/level3/tard_down.png", { frameWidth: 24, frameHeight: 24, });
         
         this.load.image("next_level", "assets/winning-star.png"); // image assesst to win the game
+        this.load.image("coin", "assets/star.png"); // star it's a coin collected by the player
 
     }
 
@@ -48,6 +49,11 @@ class level3 extends Phaser.Scene {
         this.next_level.setCollideWorldBounds(true); 
         this.physics.add.overlap(player, this.next_level, this.level_finish, null, this);
   
+
+        this.coins = this.physics.add.group(); 
+        this.physics.add.overlap(player, this.coins, this.collect_coin, null, this);
+        this.place_coins(20,'coin');
+
         //to detect user input
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -107,8 +113,34 @@ class level3 extends Phaser.Scene {
   
     level_finish(player, next_level) {
         next_level.disableBody(true, true); 
+        //this.scene.start('level1');//next level
     }
-  
+
     
+    collect_coin(player, coin) {
+        coin.destroy();
+    }
+    
+    //to set coins randomly on maps and make sure their place to position can be reached by the player
+    place_coins(count,type) {
+        const mapMinX = 100; 
+        const mapMaxX = 800; 
+        const mapMinY = 100; 
+        const mapMaxY = 800; 
+    
+        let placed = 0;
+    
+        while (placed < count) {
+            const x = Phaser.Math.Between(mapMinX, mapMaxX);
+            const y = Phaser.Math.Between(mapMinY, mapMaxY);
+    
+            if (!this.isWall(x, y)) { 
+                const coin = this.coins.create(x, y, type);
+                coin.setScale(0.5); 
+                placed++;
+            }
+        }
+    }  
+  
   
 }
