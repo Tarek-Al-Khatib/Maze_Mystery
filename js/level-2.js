@@ -5,6 +5,7 @@ class Level2 extends Phaser.Scene {
   init(data) {
     this.username = data.username;
     this.character = data.character;
+    this.score = data.score;
     console.log(data);
   }
 
@@ -82,7 +83,8 @@ class Level2 extends Phaser.Scene {
       null,
       this
     );
-    scoreText = this.add.text(450, 0, "Score: 0", {
+    
+    scoreText = this.add.text(450, 0, "Score: " + this.score,{
       fontSize: "25px",
       fill: "#fff",
     });
@@ -106,8 +108,8 @@ class Level2 extends Phaser.Scene {
   collectStars(player, star) {
     star.disableBody(true, true); // Remove the star from the screen
     //Updating the Score
-    score += 10;
-    scoreText.setText("Score: " + score);
+    this.score += 10;
+    scoreText.setText("Score: " + this.score);
   }
 
   collectWinningStar(scene, star) {
@@ -126,6 +128,7 @@ class Level2 extends Phaser.Scene {
       this.scene.start("level3", {
         username: this.username,
         character: this.character,
+        score: this.score, 
       });
     }, 3000);
   }
