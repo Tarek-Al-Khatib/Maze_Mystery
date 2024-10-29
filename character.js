@@ -1,4 +1,5 @@
 class Character {
+
   constructor(scene, x, y, characterName) {
     this.scene = scene;
     this.characterName = characterName;
