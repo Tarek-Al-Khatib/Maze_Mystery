@@ -13,14 +13,17 @@ const config = {
       },
     },
     scene: {
-      preload: preload,
-      create: create,
-      update: update,
+        preload: preload,
+        create: create,
+        update: update,
     },
-  };
+};
+
 
 
 const game = new Phaser.Game(config); //initialize phaser game
+
+
 let player;
 let cursors; 
 let mapCanvas; // Hidden canvas map pixel collsion detection
@@ -33,20 +36,21 @@ let scoreText;
 
 function preload(){
     // Load the maze PNG and other assets
-    this.load.image("map", "assets_hanan/map.png");
+    this.load.image("map", "assets/map.png");
 
     // Load the Player
-    this.load.spritesheet("tard_left", "assets_hanan/tard_left.png", {
+    this.load.spritesheet("tard_left", "assets/tard_left_blue.png", {
         frameWidth: 24,
         frameHeight: 24,
     });
     
-    this.load.spritesheet("tard_right", "assets_hanan/tard_right.png", {
+    this.load.spritesheet("tard_right", "assets/tard_right_blue.png", {
         frameWidth: 24,
         frameHeight: 24,
     });
 
-    this.load.image("star","assets_hanan/star.png");
+    this.load.image("star","assets/star.png");
+    this.load.image('bomb', 'assets/bomb.png');
 
 
 }
@@ -82,6 +86,7 @@ function create(){
         { x: 320, y: 340 },
         { x: 90, y: 240 },
         { x: 300, y: 120 },
+        { x: 270, y: 415},
     ];
 
     // Creates a physics group for stars
@@ -100,6 +105,12 @@ function create(){
     // Create the score text object
     scoreText = this.add.text(435, 16, 'Score: 0', { fontSize: '30px', fill: '#000'});
 
+    // Create the bomb object
+    this.bombs = this.physics.add.group();
+    spawnBombs.call(this, 2);
+
+    // Add collision between the player and bombs
+    this.physics.add.collider(player.player, this.bombs, hitBomb, null, this);
 
 }
 function update(){
@@ -114,4 +125,42 @@ function collectStars(player, star) {
     //Updating the Score
     score += 10;
     scoreText.setText("Score: " + score);
+}
+
+// Function to spawn bombs
+function spawnBombs(count) {
+    this.bombs = this.physics.add.group({
+        key: "bomb",
+        repeat: count - 1, // One bomb is created by default ( no need to create)
+        setXY: { x: Phaser.Math.Between(100, 800), y: Phaser.Math.Between(100, 800) },
+        setScale: { x: 2, y: 2 }
+    });
+
+    this.bombs.children.iterate((bomb) => {
+        bomb.setBounce(1);
+        bomb.setCollideWorldBounds(true);
+        const speedX = Phaser.Math.Between(-200, 200);
+        const speedY = Phaser.Math.Between(-200, 200);
+        bomb.setVelocity(speedX, speedY);
+    });
+
+    this.physics.add.collider(this.bombs, this.bombs);
+}
+
+function hitBomb(playerSprite, bomb) {
+    // Stops all physics
+    this.physics.pause();
+    // Tint the player for GameOver
+    playerSprite.setTint(0xff0000);
+
+    //Transparent background for the text
+    const background = this.add.rectangle(300, 250, 600, 500, 0x000000, 0.5);
+
+    // Display game over text
+    const gameOverText = this.add.text(250, 250, 'Game Over', { 
+        fontSize: '64px', 
+        fill: '#ff0000',
+        fontWeight: 'bold', 
+        fontFamily: 'Arial' 
+    }).setOrigin(0.5);
 }
