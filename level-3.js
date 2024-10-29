@@ -30,7 +30,10 @@ class level3 extends Phaser.Scene {
 
         //player section
         player = this.physics.add.sprite(150, 110, "tard_left"); // add a player as a physical object on map
-        
+        player.setBounce(0.2);
+        player.setCollideWorldBounds(true);
+        player.setScale(1.25);
+
         //player movement animation 
         this.anims.create({ key: "left", frames: this.anims.generateFrameNumbers("tard_left", { start: 0, end: 22, }), frameRate: 20, repeat: -1, });
         this.anims.create({ key: "right",frames: this.anims.generateFrameNumbers("tard_right", {start: 0,end: 22,}),frameRate: 22,repeat: -1,});
@@ -71,10 +74,31 @@ class level3 extends Phaser.Scene {
             player.setVelocity(0, 0);
             player.anims.play("turn", true);
         }else {
-            player.setVelocity(moveX, moveY);
+            this.move_player(player, moveX, moveY);
         }
 
     }
+    move_player(player, dx, dy) {
+        //get the next postion wall or not 
+        const nextX = player.x + dx * 0.05;
+        const nextY = player.y + dy * 0.05;
+        
+        
+        //check if the next postion wall or not 
+        if (this.isWall(nextX, nextY)) {
+          player.setVelocity(0, 0);
+        } else {
+          player.setVelocity(dx, dy);
+        }
+    }
+    
+    is_wall(x, y) {
+
+        // to check if the pixel in a specific position  if not player can move
+        const pixel = mapContext.getImageData(Math.floor(x), Math.floor(y), 1, 1).data;
+        return pixel[3] > 0;
+    }
+  
 
     
   
