@@ -10,7 +10,7 @@ class Level1 extends Phaser.Scene {
   preload() {
     // Load the maze PNG and other assets
     this.load.image("map", "assets/map.png");
-
+ 
     this.load.image("winningStar", "assets/winning-star.png");
     this.load.spritesheet("draven-left", "assets/draven-left.png", {
       frameWidth: 24,
@@ -35,6 +35,7 @@ class Level1 extends Phaser.Scene {
   }
 
   create() {
+    this.score= 0 
     //Setting up the Background
     this.cameras.main.setBackgroundColor("#8A2BE2");
 
@@ -57,35 +58,22 @@ class Level1 extends Phaser.Scene {
     const yBoundary = 82;
     const xBoundary = 0;
 
-    var xBoundaryLimit = 80;
-    var yBoundaryLimit = 0;
     // Create an instance of Character and store it as a property
-
     player = new Character(this, 210, 85, this.character, yBoundary, xBoundary); // Store reference in the outer scope
 
     player.mapContext = mapContext; // Pass the mapContext to the player in the Character class
 
     // Place stars manually within the maze
     const starPositions = [
-      { x: 150, y: 140 }, //
-      { x: 240, y: 190 }, //
+      { x: 150, y: 140 }, 
+      { x: 240, y: 190 }, 
       { x: 305, y: 140 },
       { x: 330, y: 300 },
       { x: 410, y: 200 },
       { x: 455, y: 390 },
       { x: 240, y: 450 },
     ];
-    var winningStarGroup = this.physics.add.group();
 
-    var winningStar = winningStarGroup.create(100, 285, "winningStar");
-    winningStar.setScale(0.03);
-    this.physics.add.collider(
-      player.player,
-      winningStarGroup,
-      () => this.collectWinningStar(this, winningStar),
-      null,
-      this
-    );
     // Creates a physics group for stars
     starGroup = this.physics.add.group();
 
@@ -104,11 +92,22 @@ class Level1 extends Phaser.Scene {
       this
     );
 
-    // Create the score text object
-    scoreText = this.add.text(435, 16, "Score: 0", {
-      fontSize: "30px",
-      fill: "#000",
-    });
+    var winningStarGroup = this.physics.add.group();
+
+    var winningStar = winningStarGroup.create(100, 285, "winningStar");
+    winningStar.setScale(0.03);
+    this.physics.add.collider(
+      player.player,
+      winningStarGroup,
+      () => this.collectWinningStar(this, winningStar),
+      null,
+      this
+    );
+
+    scoreText = this.add.text(450, 0, "Score: " + this.score,{
+        fontSize: "25px",
+        fill: "#fff",
+      });
 
     // Calls the function spawnBombs
     this.bombs = spawnBombs(this, 2);
@@ -131,8 +130,8 @@ class Level1 extends Phaser.Scene {
   // collect the star
   collectStars(player, star) {
     star.disableBody(true, true); // Remove the star from the screen
-    score += 10;
-    scoreText.setText("Score: " + score);
+    this.score += 10;
+    scoreText.setText("Score: " + this.score);
   }
 
   collectWinningStar(scene, star) {
@@ -151,6 +150,7 @@ class Level1 extends Phaser.Scene {
       this.scene.start("Level2", {
         username: this.username,
         character: this.character,
+        score: this.score,
       });
     }, 3000);
   }
