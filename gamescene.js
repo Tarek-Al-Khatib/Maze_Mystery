@@ -64,7 +64,7 @@ class GameScene extends Phaser.Scene {
   }
 
   moveToLevel() {
-    this.scene.start("Level2", {
+    this.scene.start("Level1", {
       username: this.username,
       character: this.selectedCharacter,
     });
