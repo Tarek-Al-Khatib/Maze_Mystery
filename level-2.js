@@ -9,7 +9,7 @@ const config = {
     default: "arcade",
     arcade: {
       gravity: { y: 0 },
-      debug: true, // Enable debug to visualize (set it false to remove the box over the dino)
+      debug: false, // Enable debug to visualize (set it false to remove the box over the dino)
     },
   },
   scene: {
@@ -30,6 +30,7 @@ let scoreText;
 
 function preload() {
   this.load.image("map2", "assets/map2.png");
+  this.load.image("winningStar", "assets/winning-star.png");
   this.load.spritesheet("tard_left", "assets/tard_left_blue.png", {
     frameWidth: 24,
     frameHeight: 24,
@@ -74,6 +75,18 @@ function create() {
     star.setScale(0.7); // Adjusting star size
   });
 
+  var winningStarGroup = this.physics.add.group();
+
+  var winningStar = winningStarGroup.create(300, 300, "winningStar");
+  winningStar.setScale(0.05);
+  this.physics.add.collider(
+    player.player,
+    winningStarGroup,
+    () => collectWinningStar(this, winningStar),
+    null,
+    this
+  );
+
   this.physics.add.overlap(player.player, starGroup, collectStars, null, this);
   scoreText = this.add.text(450, 0, "Score: 0", {
     fontSize: "25px",
@@ -101,4 +114,18 @@ function collectStars(player, star) {
   //Updating the Score
   score += 10;
   scoreText.setText("Score: " + score);
+}
+
+function collectWinningStar(scene, star) {
+  star.disableBody(true, true);
+  scene.physics.pause();
+  scene.add.rectangle(300, 300, 600, 600, 0x000000, 0.5);
+  scene.add
+    .text(300, 300, "You win", {
+      fontSize: "64px",
+      fill: "#0f0",
+      fontWeight: "bold",
+      fontFamily: "Arial",
+    })
+    .setOrigin(0.5);
 }
