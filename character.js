@@ -7,14 +7,13 @@ class Character {
     this.player = scene.physics.add.sprite(
       x,
       y,
-      this.characterName == "draven" ? "draven-right" : "tard_left"
+      this.characterName == "draven" ? "draven-left" : "tard_left"
     );
 
-    //Adding animation for our Player
     scene.anims.create({
       key: "left",
       frames: scene.anims.generateFrameNumbers(
-        this.characterName == "draven" ? "draven-right" : "tard_left",
+        this.characterName == "draven" ? "draven-left" : "tard_left",
         {
           start: 0,
           end: 22,
@@ -37,28 +36,24 @@ class Character {
       repeat: -1,
     });
 
-    // Prevent player from leaving the canvas bounds
     this.player.setCollideWorldBounds(true);
   }
 
   update() {
-    // Adding movements to the player
     const speed = 200;
     let moveX = 0;
     let moveY = 0;
 
-    // Check for input from the cursor keys
     const cursors = this.scene.input.keyboard.createCursorKeys();
 
-    // Check input for movement
     if (cursors.left.isDown) {
-      moveX = -speed; // Move left
-      this.player.anims.play("left", true); // Play left animation
+      moveX = -speed;
+      this.player.anims.play("left", true);
     } else if (cursors.right.isDown) {
       moveX = speed; // Move right
-      this.player.anims.play("right", true); // Play right animation
+      this.player.anims.play("right", true);
     } else {
-      this.player.anims.stop(); // Stop animation
+      this.player.anims.stop();
       this.player.setTexture(
         this.characterName == "draven" ? "draven-right" : "tard_right"
       );

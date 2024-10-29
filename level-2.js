@@ -11,6 +11,10 @@ class Level2 extends Phaser.Scene {
   preload() {
     this.load.image("map2", "assets/map2.png");
     this.load.image("winningStar", "assets/winning-star.png");
+    this.load.spritesheet("draven-left", "assets/draven-left.png", {
+      frameWidth: 24,
+      frameHeight: 24,
+    });
     this.load.spritesheet("draven-right", "assets/draven-right.png", {
       frameWidth: 24,
       frameHeight: 24,

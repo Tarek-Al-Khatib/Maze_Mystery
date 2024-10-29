@@ -6,6 +6,8 @@ class GameScene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.image("background", "assets/selection.png");
+
     this.load.image("draven", "assets/draven.png", {
       frameWidth: 32,
       frameHeight: 48,
@@ -17,36 +19,37 @@ class GameScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(180, 230, "draven").setScale(0.5); // Adjust scale as needed
+    this.add.image(450, 450, "background").setDisplaySize(900, 900); // to display the background image
 
-    // Add Seraphine image above the button
-    this.add.image(450, 235, "seraphine").setScale(0.5); // Adjust scale as needed
+    this.add.image(180, 230, "draven").setScale(0.5);
+    this.add.image(450, 235, "seraphine").setScale(0.5);
 
     var dravenButton = this.add
-      .text(100, 300, "Select Draven", { fontSize: "24px", fill: "#fff" })
+      .text(100, 300, "Select Draven", { fontSize: "24px", fill: "#000" })
       .setInteractive();
     var seraphineButton = this.add
-      .text(350, 300, "Select Seraphine", { fontSize: "24px", fill: "#fff" })
+      .text(350, 300, "Select Seraphine", { fontSize: "24px", fill: "#000" })
       .setInteractive();
     var startButton = this.add
-      .text(240, 400, "Start Game", { fontSize: "24px", fill: "#fff" })
+      .text(240, 400, "Start Game", { fontSize: "24px", fill: "#000" })
       .setInteractive();
 
     dravenButton.on("pointerdown", () => {
       this.selectedCharacter = "draven";
-      dravenButton.setStyle({ fill: "#0f0" });
-      seraphineButton.setStyle({ fill: "#fff" });
+      dravenButton.setStyle({ fill: "#255" });
+      seraphineButton.setStyle({ fill: "#000" });
     });
 
     seraphineButton.on("pointerdown", () => {
       this.selectedCharacter = "seraphine";
-      seraphineButton.setStyle({ fill: "#0f0" });
-      dravenButton.setStyle({ fill: "#fff" });
+      seraphineButton.setStyle({ fill: "#255" });
+      dravenButton.setStyle({ fill: "#000" });
     });
 
     startButton.on("pointerdown", () => {
-      this.username = document.getElementById("username").value;
-      if (this.username) {
+      this.username = document.getElementById("username");
+      if (this.username.value) {
+        this.username.classList.display = "none";
         this.moveToLevel();
       } else {
         alert("Please enter a username!");
