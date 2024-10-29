@@ -46,16 +46,17 @@ function preload() {
 
 function create() {
   this.cameras.main.setBackgroundColor("#fff");
-  this.add.image(300, 300, "map2").setDisplaySize(600, 600);
+  const mapImage = this.add.image(300, 300, "map2").setDisplaySize(600, 600);
   cursors = this.input.keyboard.createCursorKeys();
   mapCanvas = document.createElement("canvas");
-  mapCanvas.width = 600;
-  mapCanvas.height = 600;
+  mapCanvas.width = 500;
+  mapCanvas.height = 500;
+  mapContext = mapCanvas.getContext("2d");
 
   const texture = this.textures.get("map").getSourceImage();
   mapContext.drawImage(texture, 0, 0, 600, 600);
 
-  player = new Character(this, 180, 40);
+  player = new Character(this, 90, 260);
   player.mapContext = mapContext;
 
   const starPositions = [
