@@ -123,7 +123,10 @@ class Level2 extends Phaser.Scene {
       })
       .setOrigin(0.5);
     setTimeout(() => {
-      this.scene.start("level3");
+      this.scene.start("level3", {
+        username: this.username,
+        character: this.selectedCharacter,
+      });
     }, 3000);
   }
 }

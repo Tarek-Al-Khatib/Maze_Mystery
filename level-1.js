@@ -55,7 +55,7 @@ class Level1 extends Phaser.Scene {
 
     // Define Boundary limits
     const yBoundary = 82;
-    const xBoundary =0;
+    const xBoundary = 0;
 
     var xBoundaryLimit = 80;
     var yBoundaryLimit = 0;
@@ -69,12 +69,11 @@ class Level1 extends Phaser.Scene {
     const starPositions = [
       { x: 150, y: 140 }, //
       { x: 240, y: 190 }, //
-      { x: 305, y: 140 }, 
-      { x: 330, y: 300 }, 
-      { x: 410, y: 200 }, 
+      { x: 305, y: 140 },
+      { x: 330, y: 300 },
+      { x: 410, y: 200 },
       { x: 455, y: 390 },
-      { x: 240, y: 450 }, 
-      
+      { x: 240, y: 450 },
     ];
     var winningStarGroup = this.physics.add.group();
 
@@ -149,7 +148,10 @@ class Level1 extends Phaser.Scene {
       })
       .setOrigin(0.5);
     setTimeout(() => {
-      this.scene.start("Level2");
+      this.scene.start("Level2", {
+        username: this.username,
+        character: this.selectedCharacter,
+      });
     }, 3000);
   }
 }
