@@ -1,9 +1,17 @@
 class Character {
+<<<<<<< HEAD
+  constructor(scene, x, y, yBoundary, xBoundary) {
+    this.scene = scene;
+    this.yBoundary = yBoundary; 
+    this.xBoundary = xBoundary; 
+
+=======
 
   constructor(scene, x, y, characterName) {
     this.scene = scene;
     this.characterName = characterName;
     console.log(characterName);
+>>>>>>> a282d4a2209375446b4d73d3eb012e969051e481
     //Adding our Player to the map
     this.player = scene.physics.add.sprite(
       x,
@@ -74,6 +82,16 @@ class Character {
   movePlayer(dx, dy) {
     const nextX = this.player.x + dx * 0.05; // calculate players next potential position based on their current
     const nextY = this.player.y + dy * 0.05;
+
+
+    // Restrict movement to prevent the player from going out of the map
+    if (nextY < this.yBoundary) {
+      dy = 0; // Stop vertical 
+    }
+
+    if (nextX < this.xBoundary) {
+      dx = 0; // Stop horizontal 
+    }
 
     // Check if wall
     if (this.isWall(nextX, nextY)) {
