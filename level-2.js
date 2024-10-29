@@ -2,6 +2,8 @@ class Level2 extends Phaser.Scene {
   constructor() {
     super("Level2");
   }
+  init(data) {}
+
   preload() {
     this.load.image("map2", "assets/map2.png");
     this.load.image("winningStar", "assets/winning-star.png");

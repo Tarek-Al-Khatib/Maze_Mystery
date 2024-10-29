@@ -10,12 +10,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js"></script>
     <script src="./character.js"></script>
     <script src="./bombs.js"></script>
+    <script src="./gamescene.js"></script>
     <script src="./level-2.js"></script>
     <script src="./level-3.js"></script>
   </head>
   <body>
     <header>
       <p>here comes the header</p>
+      <input
+        type="text"
+        id="username"
+        placeholder="Enter your username"
+        style="font-size: 18px"
+      />
     </header>
     <main>
       <canvas id="gameCanvas"></canvas>
@@ -44,7 +51,7 @@
             debug: true, // Enable debug to visualize (set it false to remove the box over the dino)
           },
         },
-        scene: [Level2, level3],
+        scene: [GameScene, Level2, level3],
       };
 
       const game = new Phaser.Game(config); //initialize phaser game
