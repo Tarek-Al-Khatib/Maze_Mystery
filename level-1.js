@@ -150,7 +150,7 @@ class Level1 extends Phaser.Scene {
     setTimeout(() => {
       this.scene.start("Level2", {
         username: this.username,
-        character: this.selectedCharacter,
+        character: this.character,
       });
     }, 3000);
   }
