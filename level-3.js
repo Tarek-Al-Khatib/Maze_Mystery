@@ -12,6 +12,8 @@ class level3 extends Phaser.Scene {
         this.load.spritesheet("tard_top", "assets/level3/tard_top.png", { frameWidth: 24, frameHeight: 24, });
         this.load.spritesheet("tard_down", "assets/level3/tard_down.png", { frameWidth: 24, frameHeight: 24, });
         
+        this.load.image("next_level", "assets/winning-star.png"); // image assesst to win the game
+
     }
 
     create() {
@@ -41,9 +43,13 @@ class level3 extends Phaser.Scene {
         this.anims.create({ key: 'down', frames: this.anims.generateFrameNumbers('tard_down', { start: 0, end: 22 }), frameRate: 22, repeat: -1 });
         this.anims.create({ key: 'turn', frames: [{ key: 'tard_left', frame: 0 }], frameRate: 20 });
         
+        //finish level
+        this.next_level = this.physics.add.sprite(755, 795, "next_level").setDisplaySize(2, 2).setScale(0.05); 
+        this.next_level.setCollideWorldBounds(true); 
+        this.physics.add.overlap(player, this.next_level, this.level_finish, null, this);
+  
         //to detect user input
         cursors = this.input.keyboard.createCursorKeys();
-
 
     }
 
@@ -85,21 +91,24 @@ class level3 extends Phaser.Scene {
         
         
         //check if the next postion wall or not 
-        if (this.isWall(nextX, nextY)) {
-          player.setVelocity(0, 0);
+        if (this.is_wall(nextX, nextY)) {
+            player.setVelocity(0, 0);
         } else {
-          player.setVelocity(dx, dy);
+            player.setVelocity(dx, dy);
         }
     }
     
     is_wall(x, y) {
 
-        // to check if the pixel in a specific position  if not player can move
+        // to check if the pixel is in a specific position  if not player can move
         const pixel = mapContext.getImageData(Math.floor(x), Math.floor(y), 1, 1).data;
         return pixel[3] > 0;
     }
   
-
+    level_finish(player, next_level) {
+        next_level.disableBody(true, true); 
+    }
+  
     
   
 }
