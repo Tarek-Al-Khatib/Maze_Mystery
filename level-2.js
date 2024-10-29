@@ -1,4 +1,5 @@
 import { Character } from "./character.js";
+import { spawnBombs, hitBomb } from "./bombs.js";
 const config = {
   type: Phaser.WEBGL,
   width: 600, // canvas size
@@ -78,9 +79,14 @@ function create() {
     fill: "#000",
   });
 
-  this.bombs = this.physics.add.group();
-  spawnBombs.call(this, 2);
-  this.physics.add.collider(player.player, this.bombs, hitBomb, null, this);
+  this.bombs = spawnBombs(this, 2);
+  this.physics.add.collider(
+    player.player,
+    this.bombs,
+    (playerSprite, bomb) => hitBomb(this, playerSprite),
+    null,
+    this
+  );
 }
 
 function update() {
@@ -94,47 +100,4 @@ function collectStars(player, star) {
   //Updating the Score
   score += 10;
   scoreText.setText("Score: " + score);
-}
-
-// Function to spawn bombs
-function spawnBombs(count) {
-  this.bombs = this.physics.add.group({
-    key: "bomb",
-    repeat: count - 1, // One bomb is created by default ( no need to create)
-    setXY: {
-      x: Phaser.Math.Between(100, 800),
-      y: Phaser.Math.Between(100, 800),
-    },
-    setScale: { x: 2, y: 2 },
-  });
-
-  this.bombs.children.iterate((bomb) => {
-    bomb.setBounce(1);
-    bomb.setCollideWorldBounds(true);
-    const speedX = Phaser.Math.Between(-200, 200);
-    const speedY = Phaser.Math.Between(-200, 200);
-    bomb.setVelocity(speedX, speedY);
-  });
-
-  this.physics.add.collider(this.bombs, this.bombs);
-}
-
-function hitBomb(playerSprite, bomb) {
-  // Stops all physics
-  this.physics.pause();
-  // Tint the player for GameOver
-  playerSprite.setTint(0xff0000);
-
-  //Transparent background for the text
-  const background = this.add.rectangle(300, 250, 600, 500, 0x000000, 0.5);
-
-  // Display game over text
-  const gameOverText = this.add
-    .text(250, 250, "Game Over", {
-      fontSize: "64px",
-      fill: "#ff0000",
-      fontWeight: "bold",
-      fontFamily: "Arial",
-    })
-    .setOrigin(0.5);
 }
