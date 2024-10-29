@@ -20,12 +20,9 @@ const config = {
     },
 };
 
-
-
 const game = new Phaser.Game(config); //initialize phaser game
 
-
-let player;
+let player1;
 let cursors; 
 let mapCanvas; // Hidden canvas map pixel collsion detection
 let mapContext; // To extract pixel data
@@ -57,7 +54,7 @@ function preload(){
 }
 function create(){
     //Setting up the Background White
-    this.cameras.main.setBackgroundColor('#fff')
+    this.cameras.main.setBackgroundColor('#8A2BE2')
 
     // Adding the Maze Map (with its size)
     const mapImage = this.add.image(250, 250, "map").setDisplaySize(500, 500); 
@@ -76,9 +73,9 @@ function create(){
     mapContext.drawImage(texture, 0, 0, 500, 500); 
 
     // Create an instance of Character and store it as a property
-    player = new Character(this, 180, 40); // Store reference in the outer scope
+    player1 = new Character(this, 180, 40); // Store reference in the outer scope
 
-    player.mapContext = mapContext; // Pass the mapContext to the player in the Character class
+    player1.mapContext = mapContext; // Pass the mapContext to the player in the Character class
 
     // Place stars manually within the maze
     const starPositions = [
@@ -92,7 +89,7 @@ function create(){
 
     // Creates a physics group for stars
     starGroup = this.physics.add.group(); 
-    
+
     // Create stars at the defined positions
     starPositions.forEach((position) => { 
         const star = starGroup.create(position.x, position.y, 'star');
@@ -100,8 +97,7 @@ function create(){
     });
 
     // Add collision between the player and stars 
-    this.physics.add.overlap(player.player, starGroup, collectStars, null, this);  
-    
+    this.physics.add.overlap(player1.player, starGroup, collectStars, null, this);      
 
     // Create the score text object
     scoreText = this.add.text(435, 16, 'Score: 0', { fontSize: '30px', fill: '#000'});
@@ -110,13 +106,13 @@ function create(){
     this.bombs = spawnBombs(this, 2);
 
     // Add collision between the player and bombs
-    this.physics.add.collider(player.player, this.bombs, (playerSprite, bomb) => hitBomb(this, playerSprite), null, this);
+    this.physics.add.collider(player1.player, this.bombs, (playerSprite, bomb) => hitBomb(this, playerSprite), null, this);
 
 
 }
 function update(){
-    if (player){
-        player.update(); 
+    if (player1){
+        player1.update(); 
     }
 }
 
