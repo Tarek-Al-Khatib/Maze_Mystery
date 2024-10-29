@@ -40,4 +40,33 @@ function hitBomb(scene, playerSprite) {
       fontFamily: "Arial",
     })
     .setOrigin(0.5);
+
+    var restartButton = scene.add.text(300,400 , 'Restart', {
+        fontSize: "32px",
+        fill: '#ffffff',
+        backgroundColor: '#000000',
+        padding: { x: 10, y: 5 },
+    }).setOrigin(0.5).setInteractive();
+
+    restartButton.on('pointerdown', () => {
+        scene.score = 0; 
+
+        // Update the score text display
+        if (scene.scoreText) {
+            scene.scoreText.setText("Score: " + scene.score);
+        }
+
+        scene.scene.start('Level1'); 
+    });
+
+    restartButton.on('pointerover', () => {
+        restartButton.setStyle({ fill: '#8A2BE2' });
+    });
+    
+    restartButton.on('pointerout', () => {
+        restartButton.setStyle({ fill: '#ffffff' });
+    });
+ 
+    
+
 }
