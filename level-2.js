@@ -2,8 +2,8 @@ import { Character } from "./character.js";
 import { spawnBombs, hitBomb } from "./bombs.js";
 const config = {
   type: Phaser.WEBGL,
-  width: 800, // canvas size
-  height: 800, //canvas size
+  width: 600, // canvas size
+  height: 600, //canvas size
   canvas: gameCanvas, //canvasID
   physics: {
     default: "arcade",
@@ -46,17 +46,17 @@ function preload() {
 
 function create() {
   this.cameras.main.setBackgroundColor("#fff");
-  const mapImage = this.add.image(400, 400, "map2").setDisplaySize(800, 800);
+  const mapImage = this.add.image(300, 300, "map2").setDisplaySize(600, 600);
   cursors = this.input.keyboard.createCursorKeys();
   mapCanvas = document.createElement("canvas");
-  mapCanvas.width = 700;
-  mapCanvas.height = 700;
+  mapCanvas.width = 600;
+  mapCanvas.height = 600;
   mapContext = mapCanvas.getContext("2d");
 
   const texture = this.textures.get("map2").getSourceImage();
-  mapContext.drawImage(texture, 0, 0, 800, 800);
+  mapContext.drawImage(texture, 0, 0, 600, 600);
 
-  player = new Character(this, 90, 260);
+  player = new Character(this, 0, 240);
   player.mapContext = mapContext;
 
   const starPositions = [
@@ -75,12 +75,12 @@ function create() {
   });
 
   this.physics.add.overlap(player.player, starGroup, collectStars, null, this);
-  scoreText = this.add.text(435, 16, "Score: 0", {
-    fontSize: "30px",
-    fill: "#000",
+  scoreText = this.add.text(450, 0, "Score: 0", {
+    fontSize: "25px",
+    fill: "#fff",
   });
 
-  this.bombs = spawnBombs(this, 2);
+  this.bombs = spawnBombs(this, 4);
   this.physics.add.collider(
     player.player,
     this.bombs,
