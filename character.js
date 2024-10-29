@@ -1,27 +1,38 @@
 class Character {
-  constructor(scene, x, y) {
+  constructor(scene, x, y, characterName) {
     this.scene = scene;
-
+    this.characterName = characterName;
+    console.log(characterName);
     //Adding our Player to the map
-    this.player = scene.physics.add.sprite(x, y, "tard_left");
+    this.player = scene.physics.add.sprite(
+      x,
+      y,
+      this.characterName == "draven" ? "draven-right" : "tard_left"
+    );
 
     //Adding animation for our Player
     scene.anims.create({
       key: "left",
-      frames: scene.anims.generateFrameNumbers("tard_left", {
-        start: 0,
-        end: 22,
-      }),
+      frames: scene.anims.generateFrameNumbers(
+        this.characterName == "draven" ? "draven-right" : "tard_left",
+        {
+          start: 0,
+          end: 22,
+        }
+      ),
       frameRate: 10,
       repeat: -1,
     });
 
     scene.anims.create({
       key: "right",
-      frames: scene.anims.generateFrameNumbers("tard_right", {
-        start: 0,
-        end: 22,
-      }),
+      frames: scene.anims.generateFrameNumbers(
+        this.characterName == "draven" ? "draven-right" : "tard_right",
+        {
+          start: 0,
+          end: 22,
+        }
+      ),
       frameRate: 10,
       repeat: -1,
     });
@@ -48,7 +59,9 @@ class Character {
       this.player.anims.play("right", true); // Play right animation
     } else {
       this.player.anims.stop(); // Stop animation
-      this.player.setTexture("tard_right");
+      this.player.setTexture(
+        this.characterName == "draven" ? "draven-right" : "tard_right"
+      );
     }
 
     // To ensure the dino cant pass thru wall

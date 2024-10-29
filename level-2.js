@@ -2,11 +2,19 @@ class Level2 extends Phaser.Scene {
   constructor() {
     super("Level2");
   }
-  init(data) {}
+  init(data) {
+    this.username = data.username;
+    this.character = data.character;
+    console.log(data);
+  }
 
   preload() {
     this.load.image("map2", "assets/map2.png");
     this.load.image("winningStar", "assets/winning-star.png");
+    this.load.spritesheet("draven-right", "assets/draven-right.png", {
+      frameWidth: 24,
+      frameHeight: 24,
+    });
     this.load.spritesheet("tard_left", "assets/tard_left_blue.png", {
       frameWidth: 24,
       frameHeight: 24,
@@ -33,7 +41,7 @@ class Level2 extends Phaser.Scene {
     const texture = this.textures.get("map2").getSourceImage();
     mapContext.drawImage(texture, 0, 0, 600, 600);
 
-    player = new Character(this, 0, 240);
+    player = new Character(this, 0, 240, this.character);
     player.mapContext = mapContext;
 
     const starPositions = [
