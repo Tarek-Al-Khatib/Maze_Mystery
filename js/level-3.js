@@ -11,31 +11,22 @@ class level3 extends Phaser.Scene {
     preload() {
         this.load.image("level3map", "assets/level3/map.png");// the player map
         this.load.image("background", "assets/level3/background.jpg");// the map background 
-        this.load.spritesheet("draven-left", "assets/draven-left.png", {
-            frameWidth: 24,
-            frameHeight: 24,
-        });
-        this.load.spritesheet("draven-right", "assets/draven-right.png", {
-        frameWidth: 24,
-        frameHeight: 24,
-        });
         
-        //Player Assets
-        this.load.spritesheet("tard_left", "assets/level3/tard_left.png", { frameWidth: 24, frameHeight: 24, });
-        this.load.spritesheet("tard_right", "assets/level3/tard_right.png", { frameWidth: 24, frameHeight: 24, });
-        this.load.spritesheet("tard_top", "assets/level3/tard_top.png", { frameWidth: 24, frameHeight: 24, });
-        this.load.spritesheet("tard_down", "assets/level3/tard_down.png", { frameWidth: 24, frameHeight: 24, });
         
-        this.load.spritesheet("draven-top", "assets/draven-top.png", { frameWidth: 24, frameHeight: 24, });
-        this.load.spritesheet("draven-down", "assets/draven-down.png", { frameWidth: 24, frameHeight: 24, });
-    
-        this.load.spritesheet("draven-left", "assets/draven-left.png", { frameWidth: 24, frameHeight: 24, });
-        this.load.spritesheet("draven-right", "assets/draven-right.png", { frameWidth: 24, frameHeight: 24, });
-
         this.load.image("next_level", "assets/winning-star.png"); // image assesst to win the game
         this.load.image("coin", "assets/star.png"); // star it's a coin collected by the player
         this.load.image('bomb', 'assets/bomb.png'); // bomb to kill the player
-
+        
+        this.load.spritesheet("draven-left", "assets/draven-left.png", {frameWidth: 24,frameHeight: 24,});
+        this.load.spritesheet("draven-right", "assets/draven-right.png", { frameWidth: 24, frameHeight: 24, });
+        this.load.spritesheet("draven-top", "assets/draven-top.png", { frameWidth: 24, frameHeight: 24, });
+        this.load.spritesheet("draven-down", "assets/draven-down.png", { frameWidth: 24, frameHeight: 24, });
+        
+        this.load.spritesheet("seraphine-left", "assets/seraphine-left.png", {frameWidth: 24,frameHeight: 24,});
+        this.load.spritesheet("seraphine-right", "assets/seraphine-right.png", { frameWidth: 24, frameHeight: 24, });
+        this.load.spritesheet("seraphine-top", "assets/seraphine-top.png", { frameWidth: 24, frameHeight: 24, });
+        this.load.spritesheet("seraphine-down", "assets/seraphine-down.png", { frameWidth: 24, frameHeight: 24, });
+    
     }
 
     create() {
@@ -56,10 +47,6 @@ class level3 extends Phaser.Scene {
         player = new Character(this, 100, 70, this.character, 0, 0);
         player.mapContext = mapContext;
 
-
-        //player movement animation 
-        this.anims.create({ key: 'up', frames: this.anims.generateFrameNumbers('tard_top', { start: 0, end: 22 }), frameRate: 22, repeat: -1 });
-        this.anims.create({ key: 'down', frames: this.anims.generateFrameNumbers('tard_down', { start: 0, end: 22 }), frameRate: 22, repeat: -1 });
         
         //finish level
         this.next_level = this.physics.add.sprite(503, 529, "next_level").setDisplaySize(2, 2).setScale(0.03); 
