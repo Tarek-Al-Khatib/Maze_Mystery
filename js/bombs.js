@@ -18,20 +18,19 @@ function spawnBombs(scene, count) {
     bomb.setVelocity(speedX, speedY);
   });
 
-  scene.physics.add.collider(bombs, bombs); // Collide bombs with each other
-  return bombs; // Return the bombs group
+  scene.physics.add.collider(bombs, bombs);
+  return bombs; 
 }
 
 function hitBomb(scene, playerSprite) {
-  // Stops all physics
+  
   scene.physics.pause();
-  // Tint the player for GameOver
   playerSprite.setTint(0xff0000);
 
-  //Transparent background for the text
+  
   const background = scene.add.rectangle(300, 300, 600, 600, 0x000000, 0.5);
 
-  // Display game over text
+  
   const gameOverText = scene.add
     .text(300, 300, "Game Over", {
       fontSize: "64px",
@@ -51,7 +50,6 @@ function hitBomb(scene, playerSprite) {
     restartButton.on('pointerdown', () => {
         scene.score = 0; 
 
-        // Update the score text display
         if (scene.scoreText) {
             scene.scoreText.setText("Score: " + scene.score);
         }

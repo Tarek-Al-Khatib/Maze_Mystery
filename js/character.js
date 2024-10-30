@@ -5,7 +5,7 @@ class Character {
     this.xBoundary = xBoundary;
     this.characterName = characterName;
     console.log(characterName);
-    //Adding our Player to the map
+    
     this.player = scene.physics.add.sprite(
       x,
       y,
@@ -61,7 +61,7 @@ class Character {
       );
     }
 
-    // To ensure the dino cant pass thru wall
+    
     if (cursors.up.isDown) {
       moveY = -speed; // move up
     } else if (cursors.down.isDown) {
@@ -73,10 +73,9 @@ class Character {
   }
 
   movePlayer(dx, dy) {
-    const nextX = this.player.x + dx * 0.05; // calculate players next potential position based on their current
+    const nextX = this.player.x + dx * 0.05; 
     const nextY = this.player.y + dy * 0.05;
 
-    // Restrict movement to prevent the player from going out of the map
     if (nextY < this.yBoundary) {
       dy = 0; // Stop vertical
     }
@@ -85,16 +84,15 @@ class Character {
       dx = 0; // Stop horizontal
     }
 
-    // Check if wall
+
     if (this.isWall(nextX, nextY)) {
-      this.player.setVelocity(0); // Stop
+      this.player.setVelocity(0);
     } else {
-      this.player.setVelocity(dx, dy); // Move the player
+      this.player.setVelocity(dx, dy); 
     }
   }
 
   isWall(x, y) {
-    // Get the pixel data at the players next position
     const pixel = this.mapContext.getImageData(
       Math.floor(x),
       Math.floor(y),
@@ -102,7 +100,6 @@ class Character {
       1
     ).data;
 
-    // Check if the pixel has a non-zero alpha (indicating a wall)
     return pixel[3] > 0;
   }
 }
