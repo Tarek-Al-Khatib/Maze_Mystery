@@ -66,7 +66,7 @@ class Level2 extends Phaser.Scene {
     starGroup = this.physics.add.group();
     starPositions.forEach((position) => {
       const star = starGroup.create(position.x, position.y, "star");
-      star.setScale(0.7); // Adjusting star size
+      star.setScale(0.7); 
     });
 
     var winningStarGroup = this.physics.add.group();
@@ -111,7 +111,7 @@ class Level2 extends Phaser.Scene {
   }
 
   collectStars(player, star) {
-    star.disableBody(true, true); // Remove the star from the screen
+    star.disableBody(true, true); 
     //Updating the Score
     this.score += 10;
     scoreText.setText("Score: " + this.score);
