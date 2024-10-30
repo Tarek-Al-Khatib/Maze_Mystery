@@ -37,6 +37,13 @@ class Character {
       frameRate: 10,
       repeat: -1,
     });
+    scene.anims.create({ key: 'up', frames: scene.anims.generateFrameNumbers(
+      this.characterName == "draven" ? "draven-top" :'tard_top'
+      
+      , { start: 0, end: 22 }), frameRate: 22, repeat: -1 });
+    scene.anims.create({ key: 'down', frames: scene.anims.generateFrameNumbers(
+      this.characterName == "draven" ? "draven-down" :'tard_down'
+      , { start: 0, end: 22 }), frameRate: 22, repeat: -1 });
 
     this.player.setCollideWorldBounds(true);
   }
@@ -54,22 +61,23 @@ class Character {
     } else if (cursors.right.isDown) {
       moveX = speed; // Move right
       this.player.anims.play("right", true);
-    } else {
-      this.player.anims.stop();
-      this.player.setTexture(
-        this.characterName == "draven" ? "draven-right" : "tard_right"
-      );
-    }
+    } 
 
-    
     if (cursors.up.isDown) {
-      moveY = -speed; // move up
+      moveY = -speed;
+        this.player.anims.play("up", true);
     } else if (cursors.down.isDown) {
-      moveY = speed; //move down
+        moveY = speed;
+        this.player.anims.play("down", true);
     }
 
-    // Attempt to move the player
-    this.movePlayer(moveX, moveY);
+    if (moveX === 0 && moveY === 0) {
+      this.player.setVelocity(0, 0);
+      this.player.anims.play("turn", true);
+    }else {
+      this.movePlayer(moveX, moveY);
+    }
+
   }
 
   movePlayer(dx, dy) {

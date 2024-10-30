@@ -2,9 +2,23 @@ class level3 extends Phaser.Scene {
     constructor() {
       super("level3");  
     }
+    init(data) {
+        this.username = data.username;
+        this.character = data.character;
+        console.log(data);
+    }
+    
     preload() {
-        this.load.image("map", "assets/level3/map.png");// the player map
+        this.load.image("level3map", "assets/level3/map.png");// the player map
         this.load.image("background", "assets/level3/background.jpg");// the map background 
+        this.load.spritesheet("draven-left", "assets/draven-left.png", {
+            frameWidth: 24,
+            frameHeight: 24,
+        });
+        this.load.spritesheet("draven-right", "assets/draven-right.png", {
+        frameWidth: 24,
+        frameHeight: 24,
+        });
         
         //Player Assets
         this.load.spritesheet("tard_left", "assets/level3/tard_left.png", { frameWidth: 24, frameHeight: 24, });
@@ -12,6 +26,12 @@ class level3 extends Phaser.Scene {
         this.load.spritesheet("tard_top", "assets/level3/tard_top.png", { frameWidth: 24, frameHeight: 24, });
         this.load.spritesheet("tard_down", "assets/level3/tard_down.png", { frameWidth: 24, frameHeight: 24, });
         
+        this.load.spritesheet("draven-top", "assets/draven-top.png", { frameWidth: 24, frameHeight: 24, });
+        this.load.spritesheet("draven-down", "assets/draven-down.png", { frameWidth: 24, frameHeight: 24, });
+    
+        this.load.spritesheet("draven-left", "assets/draven-left.png", { frameWidth: 24, frameHeight: 24, });
+        this.load.spritesheet("draven-right", "assets/draven-right.png", { frameWidth: 24, frameHeight: 24, });
+
         this.load.image("next_level", "assets/winning-star.png"); // image assesst to win the game
         this.load.image("coin", "assets/star.png"); // star it's a coin collected by the player
         this.load.image('bomb', 'assets/bomb.png'); // bomb to kill the player
@@ -20,99 +40,63 @@ class level3 extends Phaser.Scene {
 
     create() {
         //map section
-        this.add.image(450, 450, "background").setDisplaySize(900, 900);// to display the background image
-        this.add.image(450, 450, "map").setDisplaySize(900, 900);// set the map image
+        this.add.image(300, 300, "background").setDisplaySize(600, 600);// to display the background image
+        this.add.image(300, 300, "level3map").setDisplaySize(600, 600);// set the map image
         
         mapCanvas = document.createElement("canvas");
-        mapCanvas.width = 900;
-        mapCanvas.height = 900;
+        mapCanvas.width = 600;
+        mapCanvas.height = 600;
         mapContext = mapCanvas.getContext("2d");
         
-        mapTexture = this.textures.get("map").getSourceImage();
-        mapContext.drawImage(mapTexture, 0, 0, 900, 900);
+        const mapTexture = this.textures.get("level3map").getSourceImage();
+        mapContext.drawImage(mapTexture, 0, 0, 600, 600);
 
 
         //player section
-        player = this.physics.add.sprite(150, 110, "tard_left"); // add a player as a physical object on map
-        player.setBounce(0.2);
-        player.setCollideWorldBounds(true);
-        player.setScale(1.25);
+        player = new Character(this, 100, 70, this.character, 0, 0);
+        player.mapContext = mapContext;
+
 
         //player movement animation 
-        this.anims.create({ key: "left", frames: this.anims.generateFrameNumbers("tard_left", { start: 0, end: 22, }), frameRate: 20, repeat: -1, });
-        this.anims.create({ key: "right",frames: this.anims.generateFrameNumbers("tard_right", {start: 0,end: 22,}),frameRate: 22,repeat: -1,});
         this.anims.create({ key: 'up', frames: this.anims.generateFrameNumbers('tard_top', { start: 0, end: 22 }), frameRate: 22, repeat: -1 });
         this.anims.create({ key: 'down', frames: this.anims.generateFrameNumbers('tard_down', { start: 0, end: 22 }), frameRate: 22, repeat: -1 });
-        this.anims.create({ key: 'turn', frames: [{ key: 'tard_left', frame: 0 }], frameRate: 20 });
         
         //finish level
-        this.next_level = this.physics.add.sprite(755, 795, "next_level").setDisplaySize(2, 2).setScale(0.05); 
+        this.next_level = this.physics.add.sprite(503, 529, "next_level").setDisplaySize(2, 2).setScale(0.03); 
         this.next_level.setCollideWorldBounds(true); 
-        this.physics.add.overlap(player, this.next_level, this.level_finish, null, this);
+        this.physics.add.overlap(player.player, this.next_level, this.level_finish, null, this);
   
 
         this.coins = this.physics.add.group(); 
-        this.physics.add.overlap(player, this.coins, this.collect_coin, null, this);
-        this.place_coins(20,'coin');
+        this.physics.add.overlap(player.player, this.coins, this.collect_coin, null, this);
+        this.place_coins(30,'coin');
 
 
         this.bombs = this.physics.add.group();
-        this.spawn_bombs(15);
+        this.spawn_bombs(6);
     
-        this.physics.add.collider(player, this.bombs, this.hit_bomb, null, this);
-  
+        this.physics.add.collider(player.player, this.bombs, 
+            (playerSprite, bomb) => hitBomb(this, playerSprite),
+            null, this);
+
+        scoreText = this.add.text(450, 0, "Score: 0", {
+            fontSize: "25px",
+            fill: "#fff",
+        });
+      
         //to detect user input
         cursors = this.input.keyboard.createCursorKeys();
 
     }
 
     update() {
-
         //set action animation to player when user press up,down, left or wright
-        const speed = 200;
-        let moveX = 0;
-        let moveY = 0;
-
-        if (cursors.left.isDown) {
-            moveX = -speed;
-            player.anims.play("left", true);
-        } else if (cursors.right.isDown) {
-            moveX = speed;
-            player.anims.play("right", true);
-        }
-
-        if (cursors.up.isDown) {
-            moveY = -speed;
-            player.anims.play("up", true);
-        } else if (cursors.down.isDown) {
-            moveY = speed;
-            player.anims.play("down", true);
-        }
-
-        if (moveX === 0 && moveY === 0) {
-            player.setVelocity(0, 0);
-            player.anims.play("turn", true);
-        }else {
-            this.move_player(player, moveX, moveY);
-        }
-
-    }
-    move_player(player, dx, dy) {
-        //get the next postion wall or not 
-        const nextX = player.x + dx * 0.05;
-        const nextY = player.y + dy * 0.05;
-        
-        
-        //check if the next postion wall or not 
-        if (this.is_wall(nextX, nextY)) {
-            player.setVelocity(0, 0);
-        } else {
-            player.setVelocity(dx, dy);
-        }
+        if (player) {
+            player.update();
+        }      
     }
     
     is_wall(x, y) {
-
         // to check if the pixel is in a specific position  if not player can move
         const pixel = mapContext.getImageData(Math.floor(x), Math.floor(y), 1, 1).data;
         return pixel[3] > 0;
@@ -120,20 +104,32 @@ class level3 extends Phaser.Scene {
   
     level_finish(player, next_level) {
         next_level.disableBody(true, true); 
-        //this.scene.start('level1');//next level
+        this.physics.pause();
+        this.add.rectangle(300, 300, 600, 600, 0x000000, 0.5);
+        this.add
+        .text(300, 300, "winner winner chicken dinner ", {
+            fontSize: "32px",
+            fill: "#0f0",
+            fontWeight: "bold",
+            fontFamily: "Arial",
+        })
+        .setOrigin(0.5);
+    
     }
 
 
     collect_coin(player, coin) {
         coin.destroy();
+        score += 10;
+        scoreText.setText("Score: " + score);
     }
     
     //to set coins randomly on maps and make sure their place to position can be reached by the player
     place_coins(count,type) {
-        const mapMinX = 100; 
-        const mapMaxX = 800; 
-        const mapMinY = 100; 
-        const mapMaxY = 800; 
+        const mapMinX = 540; //540
+        const mapMaxX = 55;//48 
+        const mapMinY = 520;//520 
+        const mapMaxY = 60;//60 
     
         let placed = 0;
     
@@ -148,13 +144,6 @@ class level3 extends Phaser.Scene {
             }
         }
     }  
-
-    //if player hit bomb will puse and lose
-    hit_bomb(player, bomb) {
-        this.physics.pause();
-        player.setTint(0xff0000);
-        player.anims.play("turn");
-    }
     
     //to set more than one bomb as we want
     spawn_bombs(count) {
