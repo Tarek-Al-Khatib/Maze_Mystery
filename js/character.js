@@ -9,13 +9,13 @@ class Character {
     this.player = scene.physics.add.sprite(
       x,
       y,
-      this.characterName == "draven" ? "draven-left" : "tard_left"
+      this.characterName == "draven" ? "draven-left" : "seraphine-left"
     );
 
     scene.anims.create({
       key: "left",
       frames: scene.anims.generateFrameNumbers(
-        this.characterName == "draven" ? "draven-left" : "tard_left",
+        this.characterName == "draven" ? "draven-left" : "seraphine-left",
         {
           start: 0,
           end: 22,
@@ -28,7 +28,7 @@ class Character {
     scene.anims.create({
       key: "right",
       frames: scene.anims.generateFrameNumbers(
-        this.characterName == "draven" ? "draven-right" : "tard_right",
+        this.characterName == "draven" ? "draven-right" : "seraphine-right",
         {
           start: 0,
           end: 22,
@@ -40,7 +40,7 @@ class Character {
     scene.anims.create({
       key: "up",
       frames: scene.anims.generateFrameNumbers(
-        this.characterName == "draven" ? "draven-top" : "tard_top",
+        this.characterName == "draven" ? "draven-top" : "seraphine-top",
         { start: 0, end: 22 }
       ),
       frameRate: 22,
@@ -49,7 +49,7 @@ class Character {
     scene.anims.create({
       key: "down",
       frames: scene.anims.generateFrameNumbers(
-        this.characterName == "draven" ? "draven-down" : "tard_down",
+        this.characterName == "draven" ? "draven-down" : "seraphine-down",
         { start: 0, end: 22 }
       ),
       frameRate: 22,
