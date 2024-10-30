@@ -5,6 +5,7 @@ class level3 extends Phaser.Scene {
     init(data) {
         this.username = data.username;
         this.character = data.character;
+        this.score = data.score;
         console.log(data);
     }
     
@@ -63,10 +64,10 @@ class level3 extends Phaser.Scene {
         this.spawn_bombs(6);
     
         this.physics.add.collider(player.player, this.bombs, 
-            (playerSprite, bomb) => hitBomb(this, playerSprite),
+            (playerSprite, bomb) => hitBomb(this, playerSprite,"level3"),
             null, this);
 
-        scoreText = this.add.text(450, 0, "Score: 0", {
+        scoreText = this.add.text(450, 0, "Score: " + this.score, {
             fontSize: "25px",
             fill: "#fff",
         });

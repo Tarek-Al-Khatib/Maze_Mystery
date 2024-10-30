@@ -22,7 +22,7 @@ function spawnBombs(scene, count) {
   return bombs; 
 }
 
-function hitBomb(scene, playerSprite) {
+function hitBomb(scene, playerSprite,level = '') {
   
   scene.physics.pause();
   playerSprite.setTint(0xff0000);
@@ -53,9 +53,11 @@ function hitBomb(scene, playerSprite) {
         if (scene.scoreText) {
             scene.scoreText.setText("Score: " + scene.score);
         }
-
-        scene.scene.start('Level1'); 
-    });
+        if(level != '')
+          scene.scene.start(level); 
+        else
+          scene.scene.start('Level1'); 
+      });
 
     restartButton.on('pointerover', () => {
         restartButton.setStyle({ fill: '#8A2BE2' });
