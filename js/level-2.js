@@ -12,31 +12,21 @@ class Level2 extends Phaser.Scene {
   preload() {
     this.load.image("map2", "assets/map2.png");
     this.load.image("winningStar", "assets/winning-star.png");
-    this.load.spritesheet("draven-left", "assets/draven-left.png", {
-      frameWidth: 24,
-      frameHeight: 24,
-    });
-    this.load.spritesheet("draven-right", "assets/draven-right.png", {
-      frameWidth: 24,
-      frameHeight: 24,
-    });
-    this.load.spritesheet("tard_left", "assets/tard_left_blue.png", {
-      frameWidth: 24,
-      frameHeight: 24,
-    });
-
-    this.load.spritesheet("tard_right", "assets/tard_right_blue.png", {
-      frameWidth: 24,
-      frameHeight: 24,
-    });
-    this.load.spritesheet("draven-top", "assets/draven-top.png", { frameWidth: 24, frameHeight: 24, });
-    this.load.spritesheet("draven-down", "assets/draven-down.png", { frameWidth: 24, frameHeight: 24, });
-
-    this.load.spritesheet("draven-left", "assets/draven-left.png", { frameWidth: 24, frameHeight: 24, });
-    this.load.spritesheet("draven-right", "assets/draven-right.png", { frameWidth: 24, frameHeight: 24, });
 
     this.load.image("star", "assets/star.png");
     this.load.image("bomb", "assets/bomb.png");
+
+
+    this.load.spritesheet("draven-left", "assets/draven-left.png", {frameWidth: 24,frameHeight: 24,});
+    this.load.spritesheet("draven-right", "assets/draven-right.png", { frameWidth: 24, frameHeight: 24, });
+    this.load.spritesheet("draven-top", "assets/draven-top.png", { frameWidth: 24, frameHeight: 24, });
+    this.load.spritesheet("draven-down", "assets/draven-down.png", { frameWidth: 24, frameHeight: 24, });
+    
+    this.load.spritesheet("seraphine-left", "assets/seraphine-left.png", {frameWidth: 24,frameHeight: 24,});
+    this.load.spritesheet("seraphine-right", "assets/seraphine-right.png", { frameWidth: 24, frameHeight: 24, });
+    this.load.spritesheet("seraphine-top", "assets/seraphine-top.png", { frameWidth: 24, frameHeight: 24, });
+    this.load.spritesheet("seraphine-down", "assets/seraphine-down.png", { frameWidth: 24, frameHeight: 24, });
+
   }
 
   create() {
