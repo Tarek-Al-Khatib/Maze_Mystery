@@ -22,7 +22,7 @@ function spawnBombs(scene, count) {
   return bombs; 
 }
 
-function hitBomb(scene, playerSprite,level = '') {
+function hitBomb(scene, playerSprite) {
   
   scene.physics.pause();
   playerSprite.setTint(0xff0000);
@@ -51,12 +51,10 @@ function hitBomb(scene, playerSprite,level = '') {
         scene.score = 0; 
 
         if (scene.scoreText) {
-            scene.scoreText.setText("Score: " + scene.score);
+          scene.scoreText.setText("Score: " + scene.score);
         }
-        if(level != '')
-          scene.scene.start(level); 
-        else
-          scene.scene.start('Level1'); 
+
+        scene.scene.restart(); 
       });
 
     restartButton.on('pointerover', () => {

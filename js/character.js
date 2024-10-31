@@ -37,6 +37,7 @@ class Character {
       frameRate: 10,
       repeat: -1,
     });
+
     scene.anims.create({
       key: "up",
       frames: scene.anims.generateFrameNumbers(
@@ -46,6 +47,7 @@ class Character {
       frameRate: 22,
       repeat: -1,
     });
+
     scene.anims.create({
       key: "down",
       frames: scene.anims.generateFrameNumbers(
@@ -56,6 +58,7 @@ class Character {
       repeat: -1,
     });
 
+    // Setting boundaries 
     this.player.setCollideWorldBounds(true);
   }
 
@@ -72,6 +75,11 @@ class Character {
     } else if (cursors.right.isDown) {
       moveX = speed; // Move right
       this.player.anims.play("right", true);
+    } else {
+      this.player.anims.stop();
+      this.player.setTexture(
+        this.characterName == "draven" ? "draven-right" : "seraphine-right"
+      );
     }
 
     if (cursors.up.isDown) {
@@ -84,7 +92,6 @@ class Character {
 
     if (moveX === 0 && moveY === 0) {
       this.player.setVelocity(0, 0);
-      this.player.anims.play("turn", true);
     } else {
       this.movePlayer(moveX, moveY);
     }

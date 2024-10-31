@@ -6,7 +6,7 @@ class level3 extends Phaser.Scene {
         this.username = data.username;
         this.character = data.character;
         this.score = data.score;
-        console.log(data);
+        
     }
     
     preload() {
@@ -45,7 +45,7 @@ class level3 extends Phaser.Scene {
 
 
         //player section
-        player = new Character(this, 100, 70, this.character, 0, 0);
+        player = new Character(this, 100, 70, this.character, 10, 0);
         player.mapContext = mapContext;
 
         
@@ -60,11 +60,10 @@ class level3 extends Phaser.Scene {
         this.place_coins(30,'coin');
 
 
-        this.bombs = this.physics.add.group();
-        this.spawn_bombs(6);
+        this.bombs = spawnBombs(this, 6);
     
         this.physics.add.collider(player.player, this.bombs, 
-            (playerSprite, bomb) => hitBomb(this, playerSprite,"level3"),
+            (playerSprite, bomb) => hitBomb(this, playerSprite),
             null, this);
 
         scoreText = this.add.text(450, 0, "Score: " + this.score, {
@@ -102,14 +101,21 @@ class level3 extends Phaser.Scene {
             fontFamily: "Arial",
         })
         .setOrigin(0.5);
+        this.add
+        .text(300, 350, `Final Score: ${this.score}`, {
+            fontSize: "28px",
+            fill: "#fff",
+            fontWeight: "bold",
+            fontFamily: "Arial",
+        })
+        .setOrigin(0.5);
     
     }
 
-
     collect_coin(player, coin) {
         coin.destroy();
-        score += 10;
-        scoreText.setText("Score: " + score);
+        this.score += 10;
+        scoreText.setText("Score: " + this.score);
     }
     
     //to set coins randomly on maps and make sure their place to position can be reached by the player
@@ -132,26 +138,4 @@ class level3 extends Phaser.Scene {
             }
         }
     }  
-    
-    //to set more than one bomb as we want
-    spawn_bombs(count) {
-        this.bombs = this.physics.add.group({
-            key: "bomb",
-            repeat: count - 1,
-            setXY: { x: Phaser.Math.Between(100, 800), y: Phaser.Math.Between(100, 800) },
-            setScale: { x: 1.5, y: 1.5 } 
-        });
-    
-        this.bombs.children.iterate((bomb) => {
-            bomb.setBounce(1);  
-            bomb.setCollideWorldBounds(true);
-            bomb.setScale(2)
-            bomb.setBounce(1)
-            const speedX = Phaser.Math.Between(-200, 200);
-            const speedY = Phaser.Math.Between(-200, 200);
-            bomb.setVelocity(speedX, speedY);
-        });
-    
-        this.physics.add.collider(this.bombs, this.bombs);
-    }
 }
