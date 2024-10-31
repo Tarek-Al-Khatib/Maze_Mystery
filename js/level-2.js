@@ -6,7 +6,6 @@ class Level2 extends Phaser.Scene {
     this.username = data.username;
     this.character = data.character;
     this.score = data.score;
-    
   }
 
   preload() {
@@ -16,17 +15,39 @@ class Level2 extends Phaser.Scene {
     this.load.image("star", "assets/star.png");
     this.load.image("bomb", "assets/bomb.png");
 
+    this.load.spritesheet("draven-left", "assets/draven-left.png", {
+      frameWidth: 24,
+      frameHeight: 24,
+    });
+    this.load.spritesheet("draven-right", "assets/draven-right.png", {
+      frameWidth: 24,
+      frameHeight: 24,
+    });
+    this.load.spritesheet("draven-top", "assets/draven-top.png", {
+      frameWidth: 24,
+      frameHeight: 24,
+    });
+    this.load.spritesheet("draven-down", "assets/draven-down.png", {
+      frameWidth: 24,
+      frameHeight: 24,
+    });
 
-    this.load.spritesheet("draven-left", "assets/draven-left.png", {frameWidth: 24,frameHeight: 24,});
-    this.load.spritesheet("draven-right", "assets/draven-right.png", { frameWidth: 24, frameHeight: 24, });
-    this.load.spritesheet("draven-top", "assets/draven-top.png", { frameWidth: 24, frameHeight: 24, });
-    this.load.spritesheet("draven-down", "assets/draven-down.png", { frameWidth: 24, frameHeight: 24, });
-    
-    this.load.spritesheet("seraphine-left", "assets/seraphine-left.png", {frameWidth: 24,frameHeight: 24,});
-    this.load.spritesheet("seraphine-right", "assets/seraphine-right.png", { frameWidth: 24, frameHeight: 24, });
-    this.load.spritesheet("seraphine-top", "assets/seraphine-top.png", { frameWidth: 24, frameHeight: 24, });
-    this.load.spritesheet("seraphine-down", "assets/seraphine-down.png", { frameWidth: 24, frameHeight: 24, });
-
+    this.load.spritesheet("seraphine-left", "assets/seraphine-left.png", {
+      frameWidth: 24,
+      frameHeight: 24,
+    });
+    this.load.spritesheet("seraphine-right", "assets/seraphine-right.png", {
+      frameWidth: 24,
+      frameHeight: 24,
+    });
+    this.load.spritesheet("seraphine-top", "assets/seraphine-top.png", {
+      frameWidth: 24,
+      frameHeight: 24,
+    });
+    this.load.spritesheet("seraphine-down", "assets/seraphine-down.png", {
+      frameWidth: 24,
+      frameHeight: 24,
+    });
   }
 
   create() {
@@ -45,18 +66,18 @@ class Level2 extends Phaser.Scene {
     player.mapContext = mapContext;
 
     const starPositions = [
-      { x: 120, y: 120 },
-      { x: 250, y: 180 },
-      { x: 320, y: 340 },
-      { x: 90, y: 240 },
-      { x: 300, y: 120 },
-      { x: 270, y: 415 },
+      { x: 80, y: 120 },
+      { x: 120, y: 180 },
+      { x: 320, y: 360 },
+      { x: 190, y: 270 },
+      { x: 300, y: 110 },
+      { x: 270, y: 400 },
     ];
 
     starGroup = this.physics.add.group();
     starPositions.forEach((position) => {
       const star = starGroup.create(position.x, position.y, "star");
-      star.setScale(0.7); 
+      star.setScale(0.7);
     });
 
     var winningStarGroup = this.physics.add.group();
@@ -78,8 +99,8 @@ class Level2 extends Phaser.Scene {
       null,
       this
     );
-    
-    scoreText = this.add.text(450, 0, "Score: " + this.score,{
+
+    scoreText = this.add.text(450, 0, "Score: " + this.score, {
       fontSize: "25px",
       fill: "#fff",
     });
@@ -88,7 +109,7 @@ class Level2 extends Phaser.Scene {
     this.physics.add.collider(
       player.player,
       this.bombs,
-      (playerSprite, bomb) => hitBomb(this, playerSprite,'Level2'),
+      (playerSprite, bomb) => hitBomb(this, playerSprite, "Level2"),
       null,
       this
     );
@@ -101,7 +122,7 @@ class Level2 extends Phaser.Scene {
   }
 
   collectStars(player, star) {
-    star.disableBody(true, true); 
+    star.disableBody(true, true);
     //Updating the Score
     this.score += 10;
     scoreText.setText("Score: " + this.score);
@@ -123,7 +144,7 @@ class Level2 extends Phaser.Scene {
       this.scene.start("level3", {
         username: this.username,
         character: this.character,
-        score: this.score, 
+        score: this.score,
       });
     }, 3000);
   }
