@@ -51,11 +51,11 @@ function hitBomb(scene, playerSprite) {
         scene.score = 0; 
 
         if (scene.scoreText) {
-            scene.scoreText.setText("Score: " + scene.score);
+          scene.scoreText.setText("Score: " + scene.score);
         }
 
-        scene.scene.start('Level1'); 
-    });
+        scene.scene.restart(); 
+      });
 
     restartButton.on('pointerover', () => {
         restartButton.setStyle({ fill: '#8A2BE2' });

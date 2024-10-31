@@ -6,7 +6,7 @@ class Level2 extends Phaser.Scene {
     this.username = data.username;
     this.character = data.character;
     this.score = data.score;
-    console.log(data);
+    
   }
 
   preload() {
@@ -88,7 +88,7 @@ class Level2 extends Phaser.Scene {
     this.physics.add.collider(
       player.player,
       this.bombs,
-      (playerSprite, bomb) => hitBomb(this, playerSprite),
+      (playerSprite, bomb) => hitBomb(this, playerSprite,'Level2'),
       null,
       this
     );
