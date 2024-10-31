@@ -15,7 +15,7 @@ const config = {
     default: "arcade",
     arcade: {
       gravity: { y: 0 },
-      debug: true, // Enable debug to visualize (set it false to remove the box over the dino)
+      debug: false, // Enable debug to visualize (set it false to remove the box over the dino)
     },
   },
   scene: [GameScene, Level1, Level2, level3],
